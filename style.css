@@ -1,0 +1,180 @@
+* {
+  box-sizing: border-box;
+}
+
+.footer {
+  background-color: #070720;
+  color: white;
+  text-align: center;
+  padding: 22px;
+  margin-top: 60px;
+}
+
+.footer p {
+  margin: 0;
+  font-size: 14px;
+}
+
+body {
+  margin: 0;
+  background-color: #f7f7f7;
+  font-family: Arial, sans-serif;
+  color: #111;
+}
+
+/* Navbar */
+.navbar {
+  height: 90px;
+  background-color: white;
+  padding: 0 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.nav-links {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+
+.nav-pill {
+  text-decoration: none;
+  color: #111;
+  background-color: white;
+  padding: 11px 20px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.nav-pill:hover {
+  background-color: #f0f0f0;
+}
+
+.nav-pill.active {
+  background-color: #42c3ff;
+  color: white;
+}
+
+.logout-btn {
+  text-decoration: none;
+  color: white;
+  background-color: #070720;
+  padding: 15px 28px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+/* Heading */
+.page-heading {
+  text-align: center;
+  margin-top: 55px;
+  margin-bottom: 35px;
+}
+
+.page-heading h1 {
+  font-size: 52px;
+  margin: 0;
+  font-weight: 800;
+}
+
+.page-heading p {
+  font-size: 19px;
+  color: #666;
+  margin-top: 12px;
+}
+
+/* Listings */
+.listings-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+  padding: 20px 60px 70px;
+}
+
+.listing-card {
+  background-color: white;
+  border-radius: 24px;
+  padding: 14px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+.listing-img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 20px;
+  background-color: #eeeeee;
+}
+
+.listing-details {
+  padding: 6px 4px 2px;
+}
+
+.listing-details h3 {
+  font-size: 22px;
+  margin: 12px 0 5px;
+}
+
+.description {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 8px;
+}
+
+.price {
+  font-size: 30px;
+  color: rgb(71, 255, 47)
+  font-weight: 800;
+  margin: 0 0 10px;
+}
+
+.listing-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.edit-btn,
+.delete-btn {
+  border: none;
+  background-color: #f2f2f2;
+  border-radius: 999px;
+  padding: 8px 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.delete-btn {
+  color: red;
+}
+
+/* Responsive */
+@media (max-width: 1000px) {
+  .listings-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .listings-grid {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+
+  .navbar {
+    flex-direction: column;
+    height: auto;
+    gap: 15px;
+    padding: 20px;
+  }
+
+  .page-heading h1 {
+    font-size: 38px;
+  }
+}
