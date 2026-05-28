@@ -26,7 +26,7 @@ campus-marketplace/
 │   └── images/             ← Any local fallback images
 └── README.md
 ```
-
+  
 ### Shared JS Modules
 
 **`firebase-config.js`** — imported by every page. Contains only:
