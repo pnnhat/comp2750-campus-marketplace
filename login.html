@@ -41,19 +41,19 @@
 
         <form id="login-form" novalidate>
           <div class="form-group">
-            <label class="form-label" for="email">Student Email</label>
-            <input class="form-input" type="email" id="email" name="email"
+            <label class="form-label" for="email-input">Student Email</label>
+            <input class="form-input" type="email" id="email-input" name="email"
                    placeholder="name@students.mq.edu.au"
                    autocomplete="email" required>
           </div>
           <div class="form-group">
-            <label class="form-label" for="password">Password</label>
-            <input class="form-input" type="password" id="password" name="password"
+            <label class="form-label" for="password-input">Password</label>
+            <input class="form-input" type="password" id="password-input" name="password"
                    placeholder="Enter your password"
                    autocomplete="current-password" required>
           </div>
-          <button class="btn-login" type="submit">Sign in →</button>
-          <div class="form-error" id="login-error"></div>
+          <button class="btn-login" type="submit" id="login-btn">Sign in →</button>
+          <p id="error-msg" style="display:none; color: var(--color-accent); font-size: 12px; margin-top: 8px;"></p>
         </form>
       </div>
     </div>
@@ -66,26 +66,35 @@
     // TODO Phase 2: import { auth } from "./js/firebase-config.js";
     // TODO Phase 2: import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-    document.getElementById('login-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email    = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-      const errorDiv = document.getElementById('login-error');
-      errorDiv.classList.remove('visible');
+    import { auth } from "./js/firebase-config.js";
+    import { signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-      if (!email || !password) {
-        errorDiv.textContent = 'Please enter your email and password.';
-        errorDiv.classList.add('visible');
-        return;
-      }
+    // If user is already signed in, redirect to home page immediately
+    onAuthStateChanged(auth, (user) => {
+      if (user) window.location.href = "index.html";
+    });
+
+    document.getElementById("login-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email    = document.getElementById("email-input").value.trim();
+      const password = document.getElementById("password-input").value;
+      const errorEl  = document.getElementById("error-msg");
+      errorEl.style.display = "none";
 
       try {
-        // TODO Phase 2: await signInWithEmailAndPassword(auth, email, password);
-        sessionStorage.setItem('mq-user-email', email);
-        window.location.href = 'index.html';
+        // Sign in the user with Firebase email/password authentication
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = "index.html";
       } catch (err) {
-        errorDiv.textContent = 'Invalid email or password. Please try again.';
-        errorDiv.classList.add('visible');
+        // Map Firebase error codes to human-readable messages
+        const messages = {
+          "auth/invalid-credential": "Incorrect email or password.",
+          "auth/user-not-found":     "No account found with that email.",
+          "auth/wrong-password":     "Incorrect password.",
+          "auth/too-many-requests":  "Too many attempts. Please try again later."
+        };
+        errorEl.textContent = messages[err.code] || "Sign in failed. Please try again.";
+        errorEl.style.display = "block";
       }
     });
   </script>

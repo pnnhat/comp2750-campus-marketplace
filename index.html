@@ -30,17 +30,17 @@
       <a href="shortlist.html"   class="nav-pill">Shortlist</a>
     </div>
     <div class="nav-right">
-      <span class="nav-user-email" id="nav-user-email"></span>
+      <span class="nav-user-email" id="user-email"></span>
       <button class="theme-toggle-btn" id="theme-toggle"
               title="Toggle theme" aria-label="Toggle theme"></button>
-      <button class="nav-signout-btn" id="sign-out-btn">Sign out</button>
+      <button class="nav-signout-btn" id="signout-btn">Sign out</button>
     </div>
   </nav>
 
   <!-- Hero -->
   <section class="hero-section">
     <p class="hero-eyebrow">Welcome Back</p>
-    <h1 class="hero-heading" id="hero-heading">Hey there</h1>
+    <h1 class="hero-heading" id="user-greeting">Hey there</h1>
     <p class="hero-sub">What would you like to do today?</p>
   </section>
 
@@ -107,18 +107,8 @@
     //   document.getElementById('nav-user-email').textContent = user.email;
     // });
 
-    // Placeholder: use sessionStorage until Firebase auth is wired up
-    const email = sessionStorage.getItem('mq-user-email') || '';
-    const name  = email ? email.split('@')[0] : 'there';
-    document.getElementById('hero-heading').textContent    = `Hey, ${name}`;
-    document.getElementById('nav-user-email').textContent  = email;
-
-    document.getElementById('sign-out-btn').addEventListener('click', () => {
-      // TODO Phase 2: signOut(auth).then(() => window.location.href = 'login.html');
-      sessionStorage.clear();
-      window.location.href = 'login.html';
-    });
   </script>
+  <script type="module" src="js/index.js"></script>
 
 </body>
 </html>

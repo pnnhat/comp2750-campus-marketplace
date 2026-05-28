@@ -30,10 +30,10 @@
       <a href="shortlist.html"   class="nav-pill">Shortlist</a>
     </div>
     <div class="nav-right">
-      <span class="nav-user-email" id="nav-user-email"></span>
+      <span class="nav-user-email" id="user-email"></span>
       <button class="theme-toggle-btn" id="theme-toggle"
               title="Toggle theme" aria-label="Toggle theme"></button>
-      <button class="nav-signout-btn" id="sign-out-btn">Sign out</button>
+      <button class="nav-signout-btn" id="signout-btn">Sign out</button>
     </div>
   </nav>
 
@@ -45,120 +45,15 @@
 
   <!-- Filter chips -->
   <div class="filter-bar">
-    <button class="filter-chip active" data-category="all">All</button>
-    <button class="filter-chip" data-category="Textbooks">Textbooks</button>
-    <button class="filter-chip" data-category="Electronics">Electronics</button>
-    <button class="filter-chip" data-category="Furniture">Furniture</button>
-    <button class="filter-chip" data-category="Clothing">Clothing</button>
+    <button class="filter-chip filter-btn active" data-category="all">All</button>
+    <button class="filter-chip filter-btn" data-category="Textbooks">Textbooks</button>
+    <button class="filter-chip filter-btn" data-category="Electronics">Electronics</button>
+    <button class="filter-chip filter-btn" data-category="Furniture">Furniture</button>
+    <button class="filter-chip filter-btn" data-category="Clothing">Clothing</button>
   </div>
 
   <!-- Items grid -->
-  <div class="items-grid">
-
-    <div class="item-card" data-category="Clothing">
-      <img src="images/Item1.jpg" class="item-card-img" alt="Calla Tote Bag"
-           onerror="this.style.display='none'">
-      <div class="item-card-body">
-        <span class="badge badge-clothing">Clothing</span>
-        <div class="item-card-name">Calla Tote Bag</div>
-        <div class="item-card-desc">Brown everyday tote bag in good condition.</div>
-        <div class="item-card-price">$150</div>
-        <div class="item-card-seller">priya.k@students.mq.edu.au</div>
-        <button class="shortlist-btn">♡ Shortlist</button>
-      </div>
-    </div>
-
-    <div class="item-card" data-category="Clothing">
-      <img src="images/Item2.jpg" class="item-card-img" alt="Labubu Keychain"
-           onerror="this.style.display='none'">
-      <div class="item-card-body">
-        <span class="badge badge-clothing">Clothing</span>
-        <div class="item-card-name">Labubu Keychain</div>
-        <div class="item-card-desc">Cute plush keychain, barely used.</div>
-        <div class="item-card-price">$40</div>
-        <div class="item-card-seller">j.smith@students.mq.edu.au</div>
-        <button class="shortlist-btn">♡ Shortlist</button>
-      </div>
-    </div>
-
-    <div class="item-card" data-category="Electronics">
-      <img src="images/Item3.jpg" class="item-card-img" alt="Windows Laptop"
-           onerror="this.style.display='none'">
-      <div class="item-card-body">
-        <span class="badge badge-electronics">Electronics</span>
-        <div class="item-card-name">Windows Laptop</div>
-        <div class="item-card-desc">Lightly used, 8GB RAM, 256GB SSD.</div>
-        <div class="item-card-price">$120</div>
-        <div class="item-card-seller">t.nguyen@students.mq.edu.au</div>
-        <button class="shortlist-btn">♡ Shortlist</button>
-      </div>
-    </div>
-
-    <div class="item-card" data-category="Furniture">
-      <img src="images/Item4.jpg" class="item-card-img" alt="Stanley Drink Bottle"
-           onerror="this.style.display='none'">
-      <div class="item-card-body">
-        <span class="badge badge-furniture">Furniture</span>
-        <div class="item-card-name">Stanley Drink Bottle</div>
-        <div class="item-card-desc">New stainless steel pink water bottle.</div>
-        <div class="item-card-price">$35</div>
-        <div class="item-card-seller">priya.k@students.mq.edu.au</div>
-        <button class="shortlist-btn">♡ Shortlist</button>
-      </div>
-    </div>
-
-    <div class="item-card" data-category="Furniture">
-      <img src="images/Item5.jpg" class="item-card-img" alt="Study Lamp"
-           onerror="this.style.display='none'">
-      <div class="item-card-body">
-        <span class="badge badge-furniture">Furniture</span>
-        <div class="item-card-name">Study Lamp</div>
-        <div class="item-card-desc">White desk lamp, perfect for study sessions.</div>
-        <div class="item-card-price">$20</div>
-        <div class="item-card-seller">j.smith@students.mq.edu.au</div>
-        <button class="shortlist-btn">♡ Shortlist</button>
-      </div>
-    </div>
-
-    <div class="item-card" data-category="Electronics">
-      <img src="images/Item6.jpg" class="item-card-img" alt="Mini Fan"
-           onerror="this.style.display='none'">
-      <div class="item-card-body">
-        <span class="badge badge-electronics">Electronics</span>
-        <div class="item-card-name">Mini Fan</div>
-        <div class="item-card-desc">Small portable fan for desk or room use.</div>
-        <div class="item-card-price">$18</div>
-        <div class="item-card-seller">t.nguyen@students.mq.edu.au</div>
-        <button class="shortlist-btn">♡ Shortlist</button>
-      </div>
-    </div>
-
-    <div class="item-card" data-category="Clothing">
-      <img src="images/Item7.jpg" class="item-card-img" alt="Canvas Tote"
-           onerror="this.style.display='none'">
-      <div class="item-card-body">
-        <span class="badge badge-clothing">Clothing</span>
-        <div class="item-card-name">Canvas Tote</div>
-        <div class="item-card-desc">Simple canvas bag for uni and groceries.</div>
-        <div class="item-card-price trade">Trade</div>
-        <div class="item-card-seller">priya.k@students.mq.edu.au</div>
-        <button class="shortlist-btn">♡ Shortlist</button>
-      </div>
-    </div>
-
-    <div class="item-card" data-category="Electronics">
-      <img src="images/Item8.jpg" class="item-card-img" alt="Wireless Mouse"
-           onerror="this.style.display='none'">
-      <div class="item-card-body">
-        <span class="badge badge-electronics">Electronics</span>
-        <div class="item-card-name">Wireless Mouse</div>
-        <div class="item-card-desc">Compact mouse, works well for laptops.</div>
-        <div class="item-card-price">$15</div>
-        <div class="item-card-seller">j.smith@students.mq.edu.au</div>
-        <button class="shortlist-btn">♡ Shortlist</button>
-      </div>
-    </div>
-
+  <div class="items-grid" id="listings-grid">
   </div>
 
   <!-- Footer -->
@@ -169,10 +64,7 @@
 
   <script type="module" src="js/theme.js"></script>
   <script type="module" src="js/marketplace.js"></script>
-  <script type="module">
-    const email = sessionStorage.getItem('mq-user-email') || '';
-    document.getElementById('nav-user-email').textContent = email;
-  </script>
+
 
 </body>
 </html>
