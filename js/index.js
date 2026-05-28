@@ -5,9 +5,15 @@ requireAuth((user) => {
   // Display full email in navbar
   document.getElementById("user-email").textContent = user.email;
 
-  // Display name (part before @) in hero greeting
-  const name = user.email.split("@")[0];
-  document.getElementById("user-greeting").textContent = `Hey, ${name} 👋`;
+  // Display last name from email in hero greeting
+  const emailPrefix = user.email.split("@")[0];
+  const parts = emailPrefix.split(".");
+  const lastName = parts.length > 1
+    ? parts[parts.length - 1].charAt(0).toUpperCase()
+      + parts[parts.length - 1].slice(1)
+    : emailPrefix.charAt(0).toUpperCase() + emailPrefix.slice(1);
+  document.getElementById("user-greeting").textContent =
+    `Welcome back, ${lastName}.`;
 
   // Wire sign out button
   document.getElementById("signout-btn").addEventListener("click", handleSignOut);
