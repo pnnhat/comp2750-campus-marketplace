@@ -63,7 +63,11 @@ async function renderCard(id, data, userUID) {
   card.id = `card-${id}`;
   card.dataset.category = data.category || "";
   card.innerHTML = `
-    ${data.imageURL ? `<img src="${data.imageURL}" class="item-card-img" alt="${data.title}" onerror="this.style.display='none'">` : ""}
+    ${data.imageURL
+      ? `<img src="${data.imageURL}" class="item-card-img" alt="${data.title}"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+         <div class="item-img-placeholder" style="display:none;"></div>`
+      : `<div class="item-img-placeholder"></div>`}
     <div class="item-card-body">
       <span class="badge ${badgeClass}">${data.category}</span>
       <div class="item-card-name">${data.title}</div>

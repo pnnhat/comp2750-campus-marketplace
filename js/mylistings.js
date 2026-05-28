@@ -2,11 +2,14 @@
 // Manages the current user's listings â€” load, add, and delete.
 
 import { requireAuth, handleSignOut } from "./auth-guard.js";
-import { db } from "./firebase-config.js";
+import { db, storage } from "./firebase-config.js";
 import {
   collection, query, where, getDocs,
   addDoc, deleteDoc, doc, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  ref, uploadBytes, getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
 // Require authentication before showing the page
 requireAuth(async (user) => {
@@ -120,6 +123,20 @@ function initAddListingForm(user) {
 
   const formPanel = document.getElementById("add-listing-form");
 
+  // Show image preview when user selects a file
+  document.getElementById("field-image")
+    .addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      const preview = document.getElementById("image-preview");
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = "block";
+      } else {
+        preview.src = "";
+        preview.style.display = "none";
+      }
+    });
+
   listingForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     console.log("Form submitted");
@@ -128,8 +145,9 @@ function initAddListingForm(user) {
     const description = document.getElementById("field-description").value.trim();
     const price       = document.getElementById("field-price").value.trim();
     const category    = document.getElementById("field-category").value;
-    const imageURL    = document.getElementById("field-imageURL").value.trim();
+    const imageFile   = document.getElementById("field-image").files[0];
     const errorDiv    = document.getElementById("form-error");
+    const submitBtn   = document.getElementById("submit-listing-btn");
 
     // Validate all required fields before submitting
     if (!title || !description || !price || !category) {
@@ -139,7 +157,23 @@ function initAddListingForm(user) {
     }
     errorDiv.classList.remove("visible");
 
+    // Show loading state on submit button
+    submitBtn.textContent = "Uploading...";
+    submitBtn.disabled = true;
+
     try {
+      let imageURL = "";
+      if (imageFile) {
+        console.log("Uploading image:", imageFile.name);
+        // Upload image to Firebase Storage under listings/{userUID}/{timestamp}_{filename}
+        const filename = `${Date.now()}_${imageFile.name}`;
+        const storageRef = ref(storage, `listings/${user.uid}/${filename}`);
+        const snapshot = await uploadBytes(storageRef, imageFile);
+        // Get the public download URL
+        imageURL = await getDownloadURL(snapshot.ref);
+        console.log("Image uploaded, URL:", imageURL);
+      }
+
       console.log("Adding doc:", title, price, category);
       // Write the new listing document to Firestore
       await addDoc(collection(db, "listings"), {
@@ -147,32 +181,43 @@ function initAddListingForm(user) {
         description: description,
         price:       price,
         category:    category,
-        imageURL:    imageURL || "",
+        imageURL:    imageURL,
         sellerUID:   user.uid,
         sellerEmail: user.email,
         createdAt:   serverTimestamp()
       });
       console.log("Doc added successfully");
 
+      // Reset button state
+      submitBtn.textContent = "Post listing →";
+      submitBtn.disabled = false;
+
       // Hide form, reset fields, refresh table
       formPanel.style.display = "none";
-      listingForm.reset();
+      clearForm();
       await loadMyListings(user.uid);
     } catch (err) {
       console.error("Error adding doc:", err);
       errorDiv.textContent = "Failed to post listing. Please try again.";
       errorDiv.classList.add("visible");
+      // Reset button state on error
+      submitBtn.textContent = "Post listing →";
+      submitBtn.disabled = false;
     }
   });
 }
 
 function clearForm() {
-  ["field-title", "field-description", "field-price", "field-imageURL"].forEach(id => {
+  ["field-title", "field-description", "field-price"].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = "";
   });
   const cat = document.getElementById("field-category");
   if (cat) cat.value = "";
+  const imageInput = document.getElementById("field-image");
+  if (imageInput) imageInput.value = "";
+  const preview = document.getElementById("image-preview");
+  if (preview) { preview.src = ""; preview.style.display = "none"; }
   const errorDiv = document.getElementById("form-error");
   if (errorDiv) errorDiv.classList.remove("visible");
 }
