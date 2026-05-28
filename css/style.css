@@ -274,6 +274,26 @@ img {
   color: var(--color-badge-textbooks-text);
 }
 
+.badge-accessories {
+  background: #f5eef8;
+  color: #80225F;
+}
+
+.badge-fitness {
+  background: #edf7f4;
+  color: #009174;
+}
+
+[data-theme="dark"] .badge-accessories {
+  background: #2a1535;
+  color: #c992d8;
+}
+
+[data-theme="dark"] .badge-fitness {
+  background: #0f2a22;
+  color: #5dcaa5;
+}
+
 /* ─── Shared Form Inputs ─────────────────────────────────────────────────── */
 .form-group {
   margin-bottom: 14px;
