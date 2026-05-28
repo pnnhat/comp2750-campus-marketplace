@@ -118,8 +118,12 @@ function initAddListingForm(user) {
   const listingForm = document.getElementById("listing-form");
   if (!listingForm) return;
 
+  const formPanel = document.getElementById("add-listing-form");
+
   listingForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+    console.log("Form submitted");
+
     const title       = document.getElementById("field-title").value.trim();
     const description = document.getElementById("field-description").value.trim();
     const price       = document.getElementById("field-price").value.trim();
@@ -135,22 +139,30 @@ function initAddListingForm(user) {
     }
     errorDiv.classList.remove("visible");
 
-    // Write the new listing document to Firestore
-    await addDoc(collection(db, "listings"), {
-      title,
-      description,
-      price,
-      category,
-      imageURL:    imageURL || "",
-      sellerUID:   user.uid,
-      sellerEmail: user.email,
-      createdAt:   serverTimestamp()
-    });
+    try {
+      console.log("Adding doc:", title, price, category);
+      // Write the new listing document to Firestore
+      await addDoc(collection(db, "listings"), {
+        title:       title,
+        description: description,
+        price:       price,
+        category:    category,
+        imageURL:    imageURL || "",
+        sellerUID:   user.uid,
+        sellerEmail: user.email,
+        createdAt:   serverTimestamp()
+      });
+      console.log("Doc added successfully");
 
-    // Close form and reload listings after successful submission
-    document.getElementById("add-listing-form").style.display = "none";
-    clearForm();
-    await loadMyListings(user.uid);
+      // Hide form, reset fields, refresh table
+      formPanel.style.display = "none";
+      listingForm.reset();
+      await loadMyListings(user.uid);
+    } catch (err) {
+      console.error("Error adding doc:", err);
+      errorDiv.textContent = "Failed to post listing. Please try again.";
+      errorDiv.classList.add("visible");
+    }
   });
 }
 

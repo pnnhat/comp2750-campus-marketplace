@@ -1,5 +1,4 @@
-// theme.js — Theme toggle logic
-// Cycles: light → dark → system → light
+// theme.js — Theme toggle logic (click-to-open dropdown)
 // Imported by every page as a module
 
 const THEME_KEY = 'mq-theme';
@@ -15,12 +14,6 @@ function applyTheme(mode) {
   document.documentElement.setAttribute('data-theme', effective);
   localStorage.setItem(THEME_KEY, mode);
   updateToggleIcon(mode);
-}
-
-function cycleTheme() {
-  const current = localStorage.getItem(THEME_KEY) || 'system';
-  const next = current === 'light' ? 'dark' : current === 'dark' ? 'system' : 'light';
-  applyTheme(next);
 }
 
 function sunIcon() {
@@ -40,13 +33,13 @@ function updateToggleIcon(mode) {
   if (!btn) return;
   if (mode === 'light') {
     btn.innerHTML = sunIcon();
-    btn.title = 'Light mode (click to switch)';
+    btn.title = 'Light mode';
   } else if (mode === 'dark') {
     btn.innerHTML = moonIcon();
-    btn.title = 'Dark mode (click to switch)';
+    btn.title = 'Dark mode';
   } else {
     btn.innerHTML = systemIcon();
-    btn.title = 'System mode (click to switch)';
+    btn.title = 'System mode';
   }
 }
 
@@ -54,8 +47,57 @@ document.addEventListener('DOMContentLoaded', () => {
   const saved = localStorage.getItem(THEME_KEY) || 'system';
   updateToggleIcon(saved);
 
-  const btn = document.getElementById('theme-toggle');
-  if (btn) {
-    btn.addEventListener('click', cycleTheme);
+  const toggleBtn = document.getElementById('theme-toggle');
+  if (!toggleBtn) return;
+
+  // Build dropdown
+  const dropdown = document.createElement('div');
+  dropdown.className = 'theme-dropdown';
+  dropdown.style.display = 'none';
+
+  const options = [
+    { mode: 'light',  icon: sunIcon(),    label: 'Light'  },
+    { mode: 'dark',   icon: moonIcon(),   label: 'Dark'   },
+    { mode: 'system', icon: systemIcon(), label: 'System' },
+  ];
+
+  options.forEach(({ mode, icon, label }) => {
+    const item = document.createElement('button');
+    item.type = 'button';
+    item.className = 'theme-dropdown-item';
+    item.dataset.mode = mode;
+    item.innerHTML = `${icon} ${label}`;
+    item.addEventListener('click', (e) => {
+      e.stopPropagation();
+      applyTheme(mode);
+      dropdown.style.display = 'none';
+      updateActiveItem();
+    });
+    dropdown.appendChild(item);
+  });
+
+  // Insert dropdown after the toggle button inside its wrapper
+  toggleBtn.insertAdjacentElement('afterend', dropdown);
+
+  function updateActiveItem() {
+    const current = localStorage.getItem(THEME_KEY) || 'system';
+    dropdown.querySelectorAll('.theme-dropdown-item').forEach(item => {
+      item.classList.toggle('active', item.dataset.mode === current);
+    });
   }
+
+  // Toggle dropdown on button click
+  toggleBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = dropdown.style.display === 'block';
+    dropdown.style.display = isOpen ? 'none' : 'block';
+    if (!isOpen) updateActiveItem();
+  });
+
+  // Close dropdown on outside click
+  document.addEventListener('click', (e) => {
+    if (!toggleBtn.contains(e.target) && !dropdown.contains(e.target)) {
+      dropdown.style.display = 'none';
+    }
+  });
 });
