@@ -1,5 +1,4 @@
-/* ─── Google Fonts ───────────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600;700;900&display=swap');
+/* ─── Font stack: system sans-serif ─────────────────────────────────────── */
 
 /* ─── CSS Variables — Light Mode ─────────────────────────────────────────── */
 :root {
@@ -66,7 +65,7 @@ html {
 }
 
 body {
-  font-family: 'Libre Franklin', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
   background: var(--color-bg-primary);
   color: var(--color-text-primary);
   line-height: 1.5;
@@ -341,7 +340,7 @@ img {
 .login-left {
   flex: 1;
   background: var(--color-accent);
-  padding: 48px 40px;
+  padding: 52px 48px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -350,68 +349,55 @@ img {
 .login-left-content {
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 14px;
 }
 
-.login-mq-logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.nav-mq-img {
+  height: 36px;
+  width: auto;
+  display: block;
 }
 
-.login-mq-letters {
-  font-size: 26px;
-  font-weight: 900;
-  color: #fff;
-  letter-spacing: -0.02em;
-}
-
-.login-mq-uni {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.15;
-}
-
-.login-mq-uni span {
-  font-size: 9px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.8);
-  letter-spacing: 0.06em;
+.login-mq-img {
+  height: 40px;
+  width: auto;
+  display: block;
 }
 
 .login-headline {
-  font-size: 44px;
+  font-size: 80px;
   font-weight: 900;
   color: #fff;
-  line-height: 1.05;
+  line-height: 1.0;
+  letter-spacing: -0.02em;
 }
 
 .login-subtext {
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.75);
-  margin-top: -10px;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.5;
 }
 
 .login-badge {
   display: inline-block;
   background: rgba(255, 255, 255, 0.2);
   color: #fff;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 700;
-  padding: 5px 12px;
+  padding: 8px 18px;
   border-radius: 999px;
   align-self: flex-start;
 }
 
 .login-footer-text {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.4);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .login-right {
-  flex: 1.1;
+  flex: 1.2;
   background: var(--color-bg-primary);
-  padding: 40px 36px;
+  padding: 48px 60px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -434,34 +420,35 @@ img {
 }
 
 .login-title {
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 900;
   color: var(--color-text-primary);
   margin-bottom: 6px;
 }
 
 .login-hint {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--color-text-secondary);
-  margin-bottom: 22px;
+  margin-bottom: 24px;
 }
 
 .btn-login {
   width: 100%;
-  background: var(--color-accent);
-  color: #fff;
-  border: none;
+  background: transparent;
+  color: var(--color-text-primary);
+  border: 1.5px solid var(--color-border);
   border-radius: 8px;
-  padding: 11px;
+  padding: 13px;
   font-size: 14px;
   font-weight: 700;
   font-family: inherit;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: border-color 0.15s, background 0.15s;
 }
 
 .btn-login:hover {
-  background: var(--color-accent-hover);
+  border-color: var(--color-text-secondary);
+  background: var(--color-bg-secondary);
 }
 
 /* ─── INDEX (Welcome) PAGE ───────────────────────────────────────────────── */
