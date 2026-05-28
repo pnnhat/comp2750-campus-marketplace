@@ -1242,3 +1242,85 @@ img {
   padding: 14px;
   font-size: 15px;
 }
+
+/* ─── My Listings — Edit / Status styles ────────────────────────────────── */
+.btn-edit {
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 14px;
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  font-family: inherit;
+  margin-right: 6px;
+}
+
+.btn-edit:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.btn-save {
+  border: 1px solid #009174;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 14px;
+  background: transparent;
+  color: #009174;
+  cursor: pointer;
+  font-family: inherit;
+  margin-right: 6px;
+}
+
+.btn-save:hover {
+  background: #009174;
+  color: white;
+}
+
+.edit-input {
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  width: 100px;
+}
+
+.edit-select {
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+}
+
+.status-active {
+  font-size: 12px;
+  font-weight: 700;
+  color: #009174;
+}
+
+.status-pending {
+  font-size: 12px;
+  font-weight: 700;
+  color: #BC4700;
+}
+
+.status-sold {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.action-btns {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}

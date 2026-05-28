@@ -5,7 +5,7 @@ import { requireAuth, handleSignOut } from "./auth-guard.js";
 import { db, storage } from "./firebase-config.js";
 import {
   collection, query, where, getDocs,
-  addDoc, deleteDoc, doc, serverTimestamp
+  addDoc, deleteDoc, doc, serverTimestamp, updateDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import {
   ref, uploadBytes, getDownloadURL
@@ -60,29 +60,99 @@ function renderRow(id, data, userUID) {
   const tr = document.createElement("tr");
   tr.id = `row-${id}`;
   const badgeClass = `badge-${(data.category || "").toLowerCase()}`;
+  const status = data.status || "Active";
+
+  const statusClass = {
+    "Active":  "status-active",
+    "Pending": "status-pending",
+    "Sold":    "status-sold"
+  }[status] || "status-active";
 
   tr.innerHTML = `
     <td>
       <div class="table-item-title">${data.title}</div>
       <div class="table-item-desc">${data.description}</div>
     </td>
-    <td><span class="badge ${badgeClass}">${data.category}</span></td>
-    <td class="table-price">${data.price}</td>
-    <td><span class="table-status-active">Active</span></td>
-    <td><button class="btn-delete" id="delete-btn-${id}">Delete</button></td>
+    <td>
+      <span class="badge ${badgeClass}">${data.category}</span>
+    </td>
+    <td class="table-price" id="price-display-${id}">
+      ${data.price}
+    </td>
+    <td>
+      <span class="${statusClass}" id="status-display-${id}">
+        ${status}
+      </span>
+    </td>
+    <td class="action-btns">
+      <button class="btn-edit" id="edit-btn-${id}">Edit</button>
+      <button class="btn-delete" id="delete-btn-${id}">Delete</button>
+    </td>
   `;
 
-  // Wire up delete button for this row
-  tr.querySelector(`#delete-btn-${id}`).addEventListener("click", () => {
-    deleteListing(id, userUID);
-  });
+  tr.querySelector(`#delete-btn-${id}`)
+    .addEventListener("click", () => deleteListing(id, userUID));
+
+  tr.querySelector(`#edit-btn-${id}`)
+    .addEventListener("click", () => openEditRow(id, data, userUID));
 
   tbody.appendChild(tr);
 }
 
+// Open inline edit mode for a listing row
+function openEditRow(id, data, userUID) {
+  const priceCell   = document.getElementById(`price-display-${id}`);
+  const statusCell  = document.getElementById(`status-display-${id}`);
+  const editBtn     = document.getElementById(`edit-btn-${id}`);
+  const currentPrice  = data.price || "";
+  const currentStatus = data.status || "Active";
+
+  priceCell.innerHTML = `
+    <input class="edit-input" id="edit-price-${id}"
+           type="text" value="${currentPrice}"
+           placeholder='e.g. $20 or "Trade"'
+           style="width:90px;">
+  `;
+
+  statusCell.innerHTML = `
+    <select class="edit-select" id="edit-status-${id}">
+      <option value="Active"  ${currentStatus === "Active"  ? "selected" : ""}>Active</option>
+      <option value="Pending" ${currentStatus === "Pending" ? "selected" : ""}>Pending</option>
+      <option value="Sold"    ${currentStatus === "Sold"    ? "selected" : ""}>Sold</option>
+    </select>
+  `;
+
+  editBtn.textContent = "Save";
+  editBtn.classList.add("btn-save");
+  editBtn.classList.remove("btn-edit");
+  editBtn.onclick = () => saveEdit(id, data, userUID);
+}
+
+// Save the edited price and status to Firestore
+async function saveEdit(id, data, userUID) {
+  const newPrice  = document.getElementById(`edit-price-${id}`).value.trim();
+  const newStatus = document.getElementById(`edit-status-${id}`).value;
+
+  if (!newPrice) {
+    alert("Price cannot be empty.");
+    return;
+  }
+
+  await updateDoc(doc(db, "listings", id), {
+    price:  newPrice,
+    status: newStatus
+  });
+
+  data.price  = newPrice;
+  data.status = newStatus;
+
+  const tr = document.getElementById(`row-${id}`);
+  tr.remove();
+  renderRow(id, data, userUID);
+}
+
 // Delete a listing document from Firestore and remove its table row
 async function deleteListing(id, userUID) {
-  // Remove the document from the listings collection
   await deleteDoc(doc(db, "listings", id));
 
   // Remove the row from the DOM
