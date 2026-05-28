@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 36" width="160" height="36">
+  <text x="0" y="26" font-family="Arial, sans-serif" font-weight="900" font-size="26" fill="#D6001C">MQ</text>
+  <line x1="46" y1="6" x2="46" y2="30" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="54" y="17" font-family="Arial, sans-serif" font-weight="700" font-size="7.5" fill="#1a1a1a" letter-spacing="0.06em">MACQUARIE</text>
+  <text x="54" y="28" font-family="Arial, sans-serif" font-weight="400" font-size="7.5" fill="#444444" letter-spacing="0.06em">UNIVERSITY</text>
+</svg>

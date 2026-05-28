@@ -1,0 +1,993 @@
+/* ─── Google Fonts ───────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600;700;900&display=swap');
+
+/* ─── CSS Variables — Light Mode ─────────────────────────────────────────── */
+:root {
+  --color-bg-primary:             #ffffff;
+  --color-bg-secondary:           #f8f8f6;
+  --color-bg-tertiary:            #f0f0ee;
+  --color-text-primary:           #1a1a1a;
+  --color-text-secondary:         #666666;
+  --color-text-muted:             #aaaaaa;
+  --color-border:                 rgba(0, 0, 0, 0.10);
+  --color-accent:                 #D6001C;
+  --color-accent-hover:           #b5001a;
+  --color-accent-subtle:          #fff0f1;
+  --color-accent-text:            #D6001C;
+  --color-dark-btn:               #1A1A2E;
+  --color-badge-electronics-bg:   #eef0ff;
+  --color-badge-electronics-text: #3a4db7;
+  --color-badge-furniture-bg:     #e6f4f2;
+  --color-badge-furniture-text:   #0f6e56;
+  --color-badge-clothing-bg:      #fff0f1;
+  --color-badge-clothing-text:    #D6001C;
+  --color-badge-textbooks-bg:     #fdf3e3;
+  --color-badge-textbooks-text:   #8a5a00;
+  --color-success:                #1a7a4a;
+  --color-shadow:                 rgba(0, 0, 0, 0.06);
+}
+
+/* ─── CSS Variables — Dark Mode ──────────────────────────────────────────── */
+[data-theme="dark"] {
+  --color-bg-primary:             #1a1a1a;
+  --color-bg-secondary:           #242424;
+  --color-bg-tertiary:            #2e2e2e;
+  --color-text-primary:           #f0f0ee;
+  --color-text-secondary:         #aaaaaa;
+  --color-text-muted:             #666666;
+  --color-border:                 rgba(255, 255, 255, 0.10);
+  --color-accent:                 #ff1f3a;
+  --color-accent-hover:           #e0001a;
+  --color-accent-subtle:          #2e1215;
+  --color-accent-text:            #ff6b7a;
+  --color-dark-btn:               #f0f0ee;
+  --color-badge-electronics-bg:   #1a1d35;
+  --color-badge-electronics-text: #8a9bff;
+  --color-badge-furniture-bg:     #0f2320;
+  --color-badge-furniture-text:   #5dcaa5;
+  --color-badge-clothing-bg:      #2e1215;
+  --color-badge-clothing-text:    #ff6b7a;
+  --color-badge-textbooks-bg:     #2a1f0a;
+  --color-badge-textbooks-text:   #f0b855;
+  --color-success:                #4ade80;
+  --color-shadow:                 rgba(0, 0, 0, 0.3);
+}
+
+/* ─── Reset ──────────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────────── */
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Libre Franklin', sans-serif;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* ─── Navbar ─────────────────────────────────────────────────────────────── */
+.navbar {
+  height: 60px;
+  background: var(--color-bg-primary);
+  border-bottom: 1px solid var(--color-border);
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: 16px;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.nav-brand-divider {
+  width: 4px;
+  height: 24px;
+  background: var(--color-accent);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.nav-brand-name {
+  font-weight: 900;
+  font-size: 15px;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-pill {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 16px;
+  border-radius: 999px;
+  color: var(--color-text-secondary);
+  background: transparent;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.nav-pill:hover {
+  color: var(--color-text-primary);
+  background: var(--color-bg-secondary);
+}
+
+.nav-pill.active {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.nav-user-email {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ─── Theme Toggle Button ────────────────────────────────────────────────── */
+.theme-toggle-btn {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 5px 7px;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+}
+
+/* ─── Sign Out Button ────────────────────────────────────────────────────── */
+.nav-signout-btn {
+  background: var(--color-dark-btn);
+  color: #fff;
+  border: none;
+  padding: 7px 18px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  white-space: nowrap;
+}
+
+.nav-signout-btn:hover {
+  opacity: 0.82;
+}
+
+[data-theme="dark"] .nav-signout-btn {
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+}
+
+/* ─── Footer ─────────────────────────────────────────────────────────────── */
+.site-footer {
+  background: var(--color-bg-secondary);
+  border-top: 1px solid var(--color-border);
+  padding: 20px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+/* ─── Category Badges ────────────────────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+
+.badge-electronics {
+  background: var(--color-badge-electronics-bg);
+  color: var(--color-badge-electronics-text);
+}
+
+.badge-furniture {
+  background: var(--color-badge-furniture-bg);
+  color: var(--color-badge-furniture-text);
+}
+
+.badge-clothing {
+  background: var(--color-badge-clothing-bg);
+  color: var(--color-badge-clothing-text);
+}
+
+.badge-textbooks {
+  background: var(--color-badge-textbooks-bg);
+  color: var(--color-badge-textbooks-text);
+}
+
+/* ─── Shared Form Inputs ─────────────────────────────────────────────────── */
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  outline: none;
+  transition: border-color 0.15s;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: var(--color-accent);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23aaaaaa' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+
+.form-error {
+  color: var(--color-accent);
+  font-size: 12px;
+  margin-top: 8px;
+  display: none;
+}
+
+.form-error.visible {
+  display: block;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+/* ─── LOGIN PAGE ─────────────────────────────────────────────────────────── */
+.login-page {
+  display: flex;
+  min-height: 100vh;
+}
+
+.login-left {
+  flex: 1;
+  background: var(--color-accent);
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.login-left-content {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.login-headline {
+  font-size: 30px;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.1;
+}
+
+.login-subtext {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.75);
+  margin-top: -10px;
+}
+
+.login-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 999px;
+  align-self: flex-start;
+}
+
+.login-footer-text {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.login-right {
+  flex: 1.1;
+  background: var(--color-bg-primary);
+  padding: 40px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+[data-theme="dark"] .login-right {
+  background: var(--color-bg-secondary);
+}
+
+.login-right-inner {
+  max-width: 360px;
+  width: 100%;
+}
+
+.login-theme-toggle {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+}
+
+.login-title {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--color-text-primary);
+  margin-bottom: 6px;
+}
+
+.login-hint {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin-bottom: 22px;
+}
+
+.btn-login {
+  width: 100%;
+  background: var(--color-accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 11px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-login:hover {
+  background: var(--color-accent-hover);
+}
+
+/* ─── INDEX (Welcome) PAGE ───────────────────────────────────────────────── */
+.hero-section {
+  background: var(--color-bg-secondary);
+  padding: 40px 36px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.hero-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  color: var(--color-accent);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.hero-heading {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+  margin-bottom: 8px;
+}
+
+.hero-sub {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.nav-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 28px 36px;
+}
+
+.nav-card {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  padding: 20px 18px;
+  cursor: pointer;
+  display: block;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  color: var(--color-text-primary);
+}
+
+.nav-card:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 4px 12px var(--color-shadow);
+}
+
+.nav-card-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.nav-card-icon-marketplace {
+  background: var(--color-accent-subtle);
+  color: var(--color-accent);
+}
+
+.nav-card-icon-listings {
+  background: var(--color-badge-furniture-bg);
+  color: var(--color-badge-furniture-text);
+}
+
+.nav-card-icon-shortlist {
+  background: var(--color-badge-electronics-bg);
+  color: var(--color-badge-electronics-text);
+}
+
+.nav-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.nav-card-desc {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+/* ─── PAGE HEADER (marketplace, mylistings, shortlist) ───────────────────── */
+.page-header {
+  padding: 28px 28px 0;
+}
+
+.page-header h1 {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+.page-header p {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+/* ─── MARKETPLACE — Filter Chips ─────────────────────────────────────────── */
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 16px 28px;
+}
+
+.filter-chip {
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-primary);
+  border: none;
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.filter-chip:hover {
+  background: var(--color-border);
+}
+
+.filter-chip.active {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+/* ─── MARKETPLACE & SHORTLIST — Items Grid ───────────────────────────────── */
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  padding: 0 28px 28px;
+}
+
+.item-card {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.15s;
+}
+
+.item-card:hover {
+  box-shadow: 0 4px 16px var(--color-shadow);
+}
+
+.item-card-img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  background: var(--color-bg-tertiary);
+}
+
+.item-card-img-placeholder {
+  width: 100%;
+  height: 140px;
+  background: var(--color-bg-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  font-size: 28px;
+}
+
+.item-card-body {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.item-card-name {
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 6px;
+  margin-bottom: 4px;
+}
+
+.item-card-desc {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 6px;
+}
+
+.item-card-price {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--color-accent);
+  margin-bottom: 2px;
+}
+
+.item-card-price.trade {
+  color: var(--color-badge-furniture-text);
+}
+
+.item-card-seller {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  margin-bottom: 8px;
+}
+
+/* ─── Shortlist Button ───────────────────────────────────────────────────── */
+.shortlist-btn {
+  width: 100%;
+  border: 1.5px solid var(--color-accent);
+  background: transparent;
+  color: var(--color-accent);
+  border-radius: 999px;
+  padding: 7px 0;
+  font-weight: 700;
+  font-size: 11px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  margin-top: auto;
+}
+
+.shortlist-btn:hover:not(.shortlisted) {
+  background: var(--color-accent-subtle);
+}
+
+.shortlist-btn.shortlisted {
+  background: var(--color-accent);
+  color: #fff;
+  cursor: default;
+}
+
+/* ─── Remove Button (shortlist page) ────────────────────────────────────── */
+.remove-btn {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 7px 0;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s, color 0.15s;
+  margin-top: auto;
+}
+
+.remove-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* ─── MY LISTINGS PAGE ───────────────────────────────────────────────────── */
+.add-listing-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  margin: 16px 28px;
+  transition: background 0.15s;
+}
+
+.add-listing-btn:hover {
+  background: var(--color-accent-hover);
+}
+
+.add-listing-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.add-listing-panel.open {
+  max-height: 700px;
+}
+
+.add-listing-form-inner {
+  margin: 0 28px 20px;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.add-listing-form-inner h2 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.btn-post {
+  background: var(--color-accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-post:hover {
+  background: var(--color-accent-hover);
+}
+
+.btn-cancel-text {
+  background: none;
+  border: none;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  font-family: inherit;
+  padding: 9px 4px;
+}
+
+.btn-cancel-text:hover {
+  color: var(--color-text-primary);
+}
+
+/* ─── Listings Table (My Listings) ──────────────────────────────────────── */
+.table-container {
+  margin: 0 28px 28px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.listings-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-bg-primary);
+}
+
+.listings-table th {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  padding: 10px 14px;
+  background: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+}
+
+.listings-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+.listings-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table-item-title {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--color-text-primary);
+}
+
+.table-item-desc {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  margin-top: 2px;
+}
+
+.table-price {
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.btn-delete {
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.btn-delete:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* ─── Empty State ────────────────────────────────────────────────────────── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 28px;
+  text-align: center;
+}
+
+.empty-state-icon {
+  font-size: 40px;
+  margin-bottom: 16px;
+  line-height: 1;
+}
+
+.empty-state-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.empty-state-sub {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  max-width: 300px;
+  line-height: 1.5;
+}
+
+.empty-state-btn {
+  display: inline-block;
+  background: var(--color-accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 16px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.empty-state-btn:hover {
+  background: var(--color-accent-hover);
+}
+
+.shortlist-empty {
+  padding: 60px 28px;
+}
+
+/* ─── RESPONSIVE BREAKPOINTS ─────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .items-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .nav-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 20px 24px;
+  }
+}
+
+@media (max-width: 600px) {
+  .items-grid {
+    grid-template-columns: 1fr;
+    padding: 0 16px 20px;
+  }
+
+  .nav-cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .navbar {
+    flex-direction: column;
+    height: auto;
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .nav-user-email {
+    display: none;
+  }
+
+  .page-header {
+    padding: 20px 16px 0;
+  }
+
+  .page-header h1 {
+    font-size: 18px;
+  }
+
+  .filter-bar {
+    padding: 12px 16px;
+  }
+
+  .hero-section {
+    padding: 28px 20px;
+  }
+
+  .hero-heading {
+    font-size: 22px;
+  }
+
+  .login-page {
+    flex-direction: column;
+  }
+
+  .login-left {
+    padding: 28px 24px;
+    min-height: 200px;
+  }
+
+  .login-right {
+    padding: 28px 24px;
+    flex: 1;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .table-container {
+    margin: 0 16px 20px;
+    overflow-x: auto;
+  }
+
+  .add-listing-form-inner {
+    margin: 0 16px 20px;
+  }
+
+  .add-listing-btn {
+    margin: 16px 16px;
+  }
+}

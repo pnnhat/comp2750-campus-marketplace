@@ -1,147 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+    (function () {
+      var saved = localStorage.getItem('mq-theme') || 'system';
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var isDark = saved === 'dark' || (saved === 'system' && prefersDark);
+      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    })();
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Marketplace - Campus Marketplace</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Marketplace — Campus Marketplace</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
-
 <body>
 
-  <!-- navigation bar -->
+  <!-- Navbar -->
   <nav class="navbar">
-    <div class="nav-logo">Campus Marketplace</div>
-
+    <a href="index.html" class="nav-brand">
+      <img src="assets/mq-logo.svg" alt="Macquarie University" height="36">
+      <div class="nav-brand-divider"></div>
+      <span class="nav-brand-name">Campus Marketplace</span>
+    </a>
     <div class="nav-links">
-      <a href="index.html" class="nav-pill">Home</a>
+      <a href="index.html"       class="nav-pill">Home</a>
       <a href="marketplace.html" class="nav-pill active">Marketplace</a>
-      <a href="listings.html" class="nav-pill">My Listings</a>
-      <a href="shortlist.html" class="nav-pill">Shortlist</a>
+      <a href="mylistings.html"  class="nav-pill">My Listings</a>
+      <a href="shortlist.html"   class="nav-pill">Shortlist</a>
     </div>
-
-    <a href="login.html" class="logout-btn">Log out</a>
+    <div class="nav-right">
+      <span class="nav-user-email" id="nav-user-email"></span>
+      <button class="theme-toggle-btn" id="theme-toggle"
+              title="Toggle theme" aria-label="Toggle theme"></button>
+      <button class="nav-signout-btn" id="sign-out-btn">Sign out</button>
+    </div>
   </nav>
 
-  <!-- page headings -->
-  <section class="page-heading">
+  <!-- Page header -->
+  <div class="page-header">
     <h1>Marketplace</h1>
-    <p>Browse items listed by other students on Campus Marketplace!</p>
-  </section>
+    <p>Browse items listed by other students</p>
+  </div>
 
-  <!-- filter buttons -->
-  <section class="filter-bar">
-    <button class="filter-btn active">All</button>
-    <button class="filter-btn">Textbooks</button>
-    <button class="filter-btn">Furniture</button>
-    <button class="filter-btn">Electronics</button>
-    <button class="filter-btn">Clothing</button>
-  </section>
+  <!-- Filter chips -->
+  <div class="filter-bar">
+    <button class="filter-chip active" data-category="all">All</button>
+    <button class="filter-chip" data-category="Textbooks">Textbooks</button>
+    <button class="filter-chip" data-category="Electronics">Electronics</button>
+    <button class="filter-chip" data-category="Furniture">Furniture</button>
+    <button class="filter-chip" data-category="Clothing">Clothing</button>
+  </div>
 
-  <!-- marketplace grid -->
-  <section class="listings-grid">
+  <!-- Items grid -->
+  <div class="items-grid">
 
-    <div class="listing-card">
-      <img src="testimages/Item1.jpg" class="listing-img" alt="Calla Tote Bag">
-      <div class="listing-details">
-        <span class="category-badge">Clothing</span>
-        <h3>Calla Tote Bag</h3>
-        <p class="description">Brown everyday tote bag in good condition.</p>
-        <p class="price">$150</p>
-        <p class="seller-email">priya.k@students.mq.edu.au</p>
-        <button class="shortlist-btn">&#9825; Shortlist</button>
+    <div class="item-card" data-category="Clothing">
+      <img src="testimages/Item1.jpg" class="item-card-img" alt="Calla Tote Bag"
+           onerror="this.style.display='none'">
+      <div class="item-card-body">
+        <span class="badge badge-clothing">Clothing</span>
+        <div class="item-card-name">Calla Tote Bag</div>
+        <div class="item-card-desc">Brown everyday tote bag in good condition.</div>
+        <div class="item-card-price">$150</div>
+        <div class="item-card-seller">priya.k@students.mq.edu.au</div>
+        <button class="shortlist-btn">♡ Shortlist</button>
       </div>
     </div>
 
-    <div class="listing-card">
-      <img src="testimages/Item2.jpg" class="listing-img" alt="Labubu Keychain">
-      <div class="listing-details">
-        <span class="category-badge">Clothing</span>
-        <h3>Labubu Keychain</h3>
-        <p class="description">Cute plush keychain, barely used.</p>
-        <p class="price">$40</p>
-        <p class="seller-email">j.smith@students.mq.edu.au</p>
-        <button class="shortlist-btn">&#9825; Shortlist</button>
+    <div class="item-card" data-category="Clothing">
+      <img src="testimages/Item2.jpg" class="item-card-img" alt="Labubu Keychain"
+           onerror="this.style.display='none'">
+      <div class="item-card-body">
+        <span class="badge badge-clothing">Clothing</span>
+        <div class="item-card-name">Labubu Keychain</div>
+        <div class="item-card-desc">Cute plush keychain, barely used.</div>
+        <div class="item-card-price">$40</div>
+        <div class="item-card-seller">j.smith@students.mq.edu.au</div>
+        <button class="shortlist-btn">♡ Shortlist</button>
       </div>
     </div>
 
-    <div class="listing-card">
-      <img src="testimages/Item3.jpg" class="listing-img" alt="Windows Laptop">
-      <div class="listing-details">
-        <span class="category-badge">Electronics</span>
-        <h3>Windows Laptop</h3>
-        <p class="description">Lightly used, in good condition. 8GB RAM, 256GB SSD.</p>
-        <p class="price">$120</p>
-        <p class="seller-email">t.nguyen@students.mq.edu.au</p>
-        <button class="shortlist-btn">&#9825; Shortlist</button>
+    <div class="item-card" data-category="Electronics">
+      <img src="testimages/Item3.jpg" class="item-card-img" alt="Windows Laptop"
+           onerror="this.style.display='none'">
+      <div class="item-card-body">
+        <span class="badge badge-electronics">Electronics</span>
+        <div class="item-card-name">Windows Laptop</div>
+        <div class="item-card-desc">Lightly used, 8GB RAM, 256GB SSD.</div>
+        <div class="item-card-price">$120</div>
+        <div class="item-card-seller">t.nguyen@students.mq.edu.au</div>
+        <button class="shortlist-btn">♡ Shortlist</button>
       </div>
     </div>
 
-    <div class="listing-card">
-      <img src="testimages/Item4.jpg" class="listing-img" alt="Stanley Drink Bottle">
-      <div class="listing-details">
-        <span class="category-badge">Furniture</span>
-        <h3>Stanley Drink Bottle</h3>
-        <p class="description">New stainless steel pink water bottle.</p>
-        <p class="price">$35</p>
-        <p class="seller-email">priya.k@students.mq.edu.au</p>
-        <button class="shortlist-btn">&#9825; Shortlist</button>
+    <div class="item-card" data-category="Furniture">
+      <img src="testimages/Item4.jpg" class="item-card-img" alt="Stanley Drink Bottle"
+           onerror="this.style.display='none'">
+      <div class="item-card-body">
+        <span class="badge badge-furniture">Furniture</span>
+        <div class="item-card-name">Stanley Drink Bottle</div>
+        <div class="item-card-desc">New stainless steel pink water bottle.</div>
+        <div class="item-card-price">$35</div>
+        <div class="item-card-seller">priya.k@students.mq.edu.au</div>
+        <button class="shortlist-btn">♡ Shortlist</button>
       </div>
     </div>
 
-    <div class="listing-card">
-      <img src="testimages/Item5.jpg" class="listing-img" alt="Study Lamp">
-      <div class="listing-details">
-        <span class="category-badge">Furniture</span>
-        <h3>Study Lamp</h3>
-        <p class="description">White desk lamp, perfect for study sessions.</p>
-        <p class="price">$20</p>
-        <p class="seller-email">j.smith@students.mq.edu.au</p>
-        <button class="shortlist-btn">&#9825; Shortlist</button>
+    <div class="item-card" data-category="Furniture">
+      <img src="testimages/Item5.jpg" class="item-card-img" alt="Study Lamp"
+           onerror="this.style.display='none'">
+      <div class="item-card-body">
+        <span class="badge badge-furniture">Furniture</span>
+        <div class="item-card-name">Study Lamp</div>
+        <div class="item-card-desc">White desk lamp, perfect for study sessions.</div>
+        <div class="item-card-price">$20</div>
+        <div class="item-card-seller">j.smith@students.mq.edu.au</div>
+        <button class="shortlist-btn">♡ Shortlist</button>
       </div>
     </div>
 
-    <div class="listing-card">
-      <img src="testimages/Item6.jpg" class="listing-img" alt="Mini Fan">
-      <div class="listing-details">
-        <span class="category-badge">Electronics</span>
-        <h3>Mini Fan</h3>
-        <p class="description">Small portable fan for desk or room use.</p>
-        <p class="price">$18</p>
-        <p class="seller-email">t.nguyen@students.mq.edu.au</p>
-        <button class="shortlist-btn">&#9825; Shortlist</button>
+    <div class="item-card" data-category="Electronics">
+      <img src="testimages/Item6.jpg" class="item-card-img" alt="Mini Fan"
+           onerror="this.style.display='none'">
+      <div class="item-card-body">
+        <span class="badge badge-electronics">Electronics</span>
+        <div class="item-card-name">Mini Fan</div>
+        <div class="item-card-desc">Small portable fan for desk or room use.</div>
+        <div class="item-card-price">$18</div>
+        <div class="item-card-seller">t.nguyen@students.mq.edu.au</div>
+        <button class="shortlist-btn">♡ Shortlist</button>
       </div>
     </div>
 
-    <div class="listing-card">
-      <img src="testimages/Item7.jpg" class="listing-img" alt="Canvas Tote">
-      <div class="listing-details">
-        <span class="category-badge">Clothing</span>
-        <h3>Canvas Tote</h3>
-        <p class="description">Simple canvas bag for uni and groceries.</p>
-        <p class="price">Trade</p>
-        <p class="seller-email">priya.k@students.mq.edu.au</p>
-        <button class="shortlist-btn">&#9825; Shortlist</button>
+    <div class="item-card" data-category="Clothing">
+      <img src="testimages/Item7.jpg" class="item-card-img" alt="Canvas Tote"
+           onerror="this.style.display='none'">
+      <div class="item-card-body">
+        <span class="badge badge-clothing">Clothing</span>
+        <div class="item-card-name">Canvas Tote</div>
+        <div class="item-card-desc">Simple canvas bag for uni and groceries.</div>
+        <div class="item-card-price trade">Trade</div>
+        <div class="item-card-seller">priya.k@students.mq.edu.au</div>
+        <button class="shortlist-btn">♡ Shortlist</button>
       </div>
     </div>
 
-    <div class="listing-card">
-      <img src="testimages/Item8.jpg" class="listing-img" alt="Wireless Mouse">
-      <div class="listing-details">
-        <span class="category-badge">Electronics</span>
-        <h3>Wireless Mouse</h3>
-        <p class="description">Compact mouse, works well for laptops.</p>
-        <p class="price">$15</p>
-        <p class="seller-email">j.smith@students.mq.edu.au</p>
-        <button class="shortlist-btn">&#9825; Shortlist</button>
+    <div class="item-card" data-category="Electronics">
+      <img src="testimages/Item8.jpg" class="item-card-img" alt="Wireless Mouse"
+           onerror="this.style.display='none'">
+      <div class="item-card-body">
+        <span class="badge badge-electronics">Electronics</span>
+        <div class="item-card-name">Wireless Mouse</div>
+        <div class="item-card-desc">Compact mouse, works well for laptops.</div>
+        <div class="item-card-price">$15</div>
+        <div class="item-card-seller">j.smith@students.mq.edu.au</div>
+        <button class="shortlist-btn">♡ Shortlist</button>
       </div>
     </div>
 
-  </section>
+  </div>
 
-  <footer class="footer">
-    <p>© 2026 Campus Marketplace</p>
+  <!-- Footer -->
+  <footer class="site-footer">
+    <span>© 2026 Campus Marketplace</span>
+    <span>Built for COMP2750 · Macquarie University</span>
   </footer>
+
+  <script type="module" src="js/theme.js"></script>
+  <script type="module" src="js/marketplace.js"></script>
+  <script type="module">
+    const email = sessionStorage.getItem('mq-user-email') || '';
+    document.getElementById('nav-user-email').textContent = email;
+  </script>
 
 </body>
 </html>

@@ -1,38 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+    (function () {
+      var saved = localStorage.getItem('mq-theme') || 'system';
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var isDark = saved === 'dark' || (saved === 'system' && prefersDark);
+      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    })();
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Shortlist - Campus Marketplace</title>
-
-  <link rel="stylesheet" href="style.css" />
+  <title>My Shortlist — Campus Marketplace</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
-
 <body>
 
-  <!-- navigation bar -->
+  <!-- Navbar -->
   <nav class="navbar">
-    <div class="nav-logo">Campus Marketplace</div>
-
+    <a href="index.html" class="nav-brand">
+      <img src="assets/mq-logo.svg" alt="Macquarie University" height="36">
+      <div class="nav-brand-divider"></div>
+      <span class="nav-brand-name">Campus Marketplace</span>
+    </a>
     <div class="nav-links">
-      <a href="index.html" class="nav-pill">Home</a>
+      <a href="index.html"       class="nav-pill">Home</a>
       <a href="marketplace.html" class="nav-pill">Marketplace</a>
-      <a href="listings.html" class="nav-pill">My Listings</a>
-      <a href="shortlist.html" class="nav-pill active">Shortlist</a>
+      <a href="mylistings.html"  class="nav-pill">My Listings</a>
+      <a href="shortlist.html"   class="nav-pill active">Shortlist</a>
     </div>
-
-    <a href="login.html" class="logout-btn">Log out</a>
+    <div class="nav-right">
+      <span class="nav-user-email" id="nav-user-email"></span>
+      <button class="theme-toggle-btn" id="theme-toggle"
+              title="Toggle theme" aria-label="Toggle theme"></button>
+      <button class="nav-signout-btn" id="sign-out-btn">Sign out</button>
+    </div>
   </nav>
 
-  <!-- page heading -->
-  <section class="page-heading">
+  <!-- Page header -->
+  <div class="page-header">
     <h1>My Shortlist</h1>
-    <p>Items you have shortlisted from the marketplace.</p>
-  </section>
+    <p>Items you have saved from the marketplace</p>
+  </div>
 
-  <!-- shortlist grid -->
-  <section class="listings-grid">
+  <!-- Items grid -->
+  <div class="items-grid" id="shortlist-grid">
+
+    <div class="item-card" id="card-item3">
+      <img src="testimages/Item3.jpg" class="item-card-img" alt="Windows Laptop"
+           onerror="this.style.display='none'">
+      <div class="item-card-body">
+        <span class="badge badge-electronics">Electronics</span>
+        <div class="item-card-name">Windows Laptop</div>
+        <div class="item-card-desc">Lightly used, 8GB RAM, 256GB SSD.</div>
+        <div class="item-card-price">$120</div>
+        <div class="item-card-seller">t.nguyen@students.mq.edu.au</div>
+        <button class="remove-btn" data-id="item3">Remove</button>
+      </div>
+    </div>
+
+    <div class="item-card" id="card-item5">
+      <img src="testimages/Item5.jpg" class="item-card-img" alt="Study Lamp"
+           onerror="this.style.display='none'">
+      <div class="item-card-body">
+        <span class="badge badge-furniture">Furniture</span>
+        <div class="item-card-name">Study Lamp</div>
+        <div class="item-card-desc">White desk lamp, perfect for study sessions.</div>
+        <div class="item-card-price">$20</div>
+        <div class="item-card-seller">j.smith@students.mq.edu.au</div>
+        <button class="remove-btn" data-id="item5">Remove</button>
+      </div>
+    </div>
+
+    <div class="item-card" id="card-item8">
+      <img src="testimages/Item8.jpg" class="item-card-img" alt="Wireless Mouse"
+           onerror="this.style.display='none'">
+      <div class="item-card-body">
+        <span class="badge badge-electronics">Electronics</span>
+        <div class="item-card-name">Wireless Mouse</div>
+        <div class="item-card-desc">Compact mouse, works well for laptops.</div>
+        <div class="item-card-price">$15</div>
+        <div class="item-card-seller">j.smith@students.mq.edu.au</div>
+        <button class="remove-btn" data-id="item8">Remove</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Empty state (hidden by default) -->
+  <div class="empty-state shortlist-empty" id="empty-state" style="display:none;">
+    <div class="empty-state-icon">♡</div>
+    <div class="empty-state-title">Your shortlist is empty.</div>
+    <div class="empty-state-sub">Browse the marketplace and shortlist items you are interested in.</div>
+    <a href="marketplace.html" class="empty-state-btn">Browse Marketplace →</a>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <span>© 2026 Campus Marketplace</span>
+    <span>Built for COMP2750 · Macquarie University</span>
+  </footer>
+
+  <script type="module" src="js/theme.js"></script>
+  <script type="module" src="js/shortlist.js"></script>
+  <script type="module">
+    const email = sessionStorage.getItem('mq-user-email') || '';
+    document.getElementById('nav-user-email').textContent = email;
+
+    document.getElementById('sign-out-btn').addEventListener('click', () => {
+      sessionStorage.clear();
+      window.location.href = 'login.html';
+    });
+  </script>
+
+</body>
+</html>
 
     <!-- item 1 -->
     <div class="listing-card">

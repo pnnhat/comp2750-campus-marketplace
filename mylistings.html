@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    (function () {
+      var saved = localStorage.getItem('mq-theme') || 'system';
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var isDark = saved === 'dark' || (saved === 'system' && prefersDark);
+      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    })();
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Listings — Campus Marketplace</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">
+      <img src="assets/mq-logo.svg" alt="Macquarie University" height="36">
+      <div class="nav-brand-divider"></div>
+      <span class="nav-brand-name">Campus Marketplace</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html"       class="nav-pill">Home</a>
+      <a href="marketplace.html" class="nav-pill">Marketplace</a>
+      <a href="mylistings.html"  class="nav-pill active">My Listings</a>
+      <a href="shortlist.html"   class="nav-pill">Shortlist</a>
+    </div>
+    <div class="nav-right">
+      <span class="nav-user-email" id="nav-user-email"></span>
+      <button class="theme-toggle-btn" id="theme-toggle"
+              title="Toggle theme" aria-label="Toggle theme"></button>
+      <button class="nav-signout-btn" id="sign-out-btn">Sign out</button>
+    </div>
+  </nav>
+
+  <!-- Page header -->
+  <div class="page-header">
+    <h1>My Listings</h1>
+    <p>Items you have listed for sale or trade</p>
+  </div>
+
+  <!-- Add listing button -->
+  <button class="add-listing-btn" id="add-listing-btn">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <line x1="12" y1="5" x2="12" y2="19"/>
+      <line x1="5"  y1="12" x2="19" y2="12"/>
+    </svg>
+    Add new listing
+  </button>
+
+  <!-- Collapsible add listing form -->
+  <div class="add-listing-panel" id="add-listing-panel">
+    <div class="add-listing-form-inner">
+      <h2>New listing</h2>
+      <form id="listing-form" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="input-title">Title <span style="color:var(--color-accent)">*</span></label>
+            <input class="form-input" type="text" id="input-title"
+                   placeholder="e.g. Engineering Textbook" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="input-price">Price <span style="color:var(--color-accent)">*</span></label>
+            <input class="form-input" type="text" id="input-price"
+                   placeholder='e.g. $20 or "Trade"' required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="input-category">Category <span style="color:var(--color-accent)">*</span></label>
+            <select class="form-select" id="input-category" required>
+              <option value="">Select a category</option>
+              <option value="Textbooks">Textbooks</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Furniture">Furniture</option>
+              <option value="Clothing">Clothing</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="input-image">Image URL <span style="color:var(--color-text-muted);font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+            <input class="form-input" type="url" id="input-image"
+                   placeholder="https://...">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="input-description">Description <span style="color:var(--color-accent)">*</span></label>
+          <textarea class="form-textarea" id="input-description"
+                    placeholder="Describe the item's condition, any defects, etc." required></textarea>
+        </div>
+        <div class="form-error" id="form-error"></div>
+        <div class="form-actions">
+          <button type="button" class="btn-cancel-text" id="cancel-btn">Cancel</button>
+          <button type="submit" class="btn-post">Post listing →</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Listings table -->
+  <div class="table-container" id="table-container">
+    <table class="listings-table">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="listings-tbody">
+        <!-- Hardcoded placeholder rows — replaced by Firebase in Phase 2 -->
+        <tr data-id="placeholder-1">
+          <td>
+            <div class="table-item-title">Calla Tote Bag</div>
+            <div class="table-item-desc">Brown everyday tote bag in good condition.</div>
+          </td>
+          <td><span class="badge badge-clothing">Clothing</span></td>
+          <td class="table-price">$150</td>
+          <td><button class="btn-delete">Delete</button></td>
+        </tr>
+        <tr data-id="placeholder-2">
+          <td>
+            <div class="table-item-title">Windows Laptop</div>
+            <div class="table-item-desc">Lightly used, 8GB RAM, 256GB SSD.</div>
+          </td>
+          <td><span class="badge badge-electronics">Electronics</span></td>
+          <td class="table-price">$120</td>
+          <td><button class="btn-delete">Delete</button></td>
+        </tr>
+        <tr data-id="placeholder-3">
+          <td>
+            <div class="table-item-title">Canvas Tote</div>
+            <div class="table-item-desc">Simple canvas bag for uni and groceries.</div>
+          </td>
+          <td><span class="badge badge-clothing">Clothing</span></td>
+          <td class="table-price">Trade</td>
+          <td><button class="btn-delete">Delete</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Empty state (hidden by default) -->
+  <div class="empty-state" id="empty-state" style="display:none;">
+    <div class="empty-state-icon">📦</div>
+    <div class="empty-state-title">You haven't listed anything yet.</div>
+    <div class="empty-state-sub">Click "+ Add new listing" to post your first item.</div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <span>© 2026 Campus Marketplace</span>
+    <span>Built for COMP2750 · Macquarie University</span>
+  </footer>
+
+  <script type="module" src="js/theme.js"></script>
+  <script type="module" src="js/mylistings.js"></script>
+  <script type="module">
+    // User email display placeholder
+    const email = sessionStorage.getItem('mq-user-email') || '';
+    document.getElementById('nav-user-email').textContent = email;
+  </script>
+
+</body>
+</html>
