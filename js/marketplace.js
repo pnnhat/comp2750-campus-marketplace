@@ -8,6 +8,10 @@ import {
   doc, getDoc, setDoc, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+// Module-level state for the open modal
+let currentModalId = null;
+let currentModalData = null;
+
 // Require authentication before showing the page
 requireAuth(async (user) => {
   // Display the signed-in user's email in the navbar
@@ -22,6 +26,23 @@ requireAuth(async (user) => {
 
   // Set up category filter chips after cards are rendered
   initFilterChips();
+
+  // Close modal on X button click
+  document.getElementById("modal-close")
+    .addEventListener("click", closeModal);
+
+  // Close modal when clicking outside the container
+  document.getElementById("item-modal")
+    .addEventListener("click", (e) => {
+      if (e.target === document.getElementById("item-modal")) {
+        closeModal();
+      }
+    });
+
+  // Close modal on Escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+  });
 });
 
 // Query listings where the seller is not the current user
@@ -77,6 +98,12 @@ async function renderCard(id, data, userUID) {
       addToShortlist(userUID, id, data);
     });
   }
+  // Open modal on card click (but not when clicking the shortlist button)
+  card.style.cursor = "pointer";
+  card.addEventListener("click", (e) => {
+    if (e.target.closest(".shortlist-btn")) return;
+    openModal(id, data, userUID);
+  });
   grid.appendChild(card);
 }
 
@@ -84,6 +111,71 @@ async function checkIfShortlisted(userUID, listingId) {
   const ref = doc(db, "shortlists", userUID, "items", listingId);
   const snap = await getDoc(ref);
   return snap.exists();
+}
+
+function openModal(id, data, userUID) {
+  currentModalId = id;
+  currentModalData = data;
+
+  const modal = document.getElementById("item-modal");
+  const badgeClass = `badge-${(data.category || "").toLowerCase()}`;
+
+  document.getElementById("modal-badge").className =
+    `badge modal-badge ${badgeClass}`;
+  document.getElementById("modal-badge").textContent = data.category;
+  document.getElementById("modal-title").textContent = data.title;
+  document.getElementById("modal-desc").textContent = data.description;
+
+  const priceEl = document.getElementById("modal-price");
+  if (data.price === "Trade") {
+    priceEl.textContent = "Trade";
+    priceEl.className = "modal-price trade";
+  } else {
+    priceEl.textContent = data.price.startsWith("$")
+      ? data.price : "$" + data.price;
+    priceEl.className = "modal-price";
+  }
+
+  document.getElementById("modal-seller").textContent =
+    "Listed by " + data.sellerEmail;
+
+  const img = document.getElementById("modal-img");
+  const placeholder = document.getElementById("modal-img-placeholder");
+  if (data.imageURL) {
+    img.src = data.imageURL;
+    img.style.display = "block";
+    placeholder.style.display = "none";
+  } else {
+    img.style.display = "none";
+    placeholder.style.display = "block";
+  }
+
+  const shortlistBtn = document.getElementById("modal-shortlist-btn");
+  checkIfShortlisted(userUID, id).then(isShortlisted => {
+    if (isShortlisted) {
+      shortlistBtn.textContent = "♥ Shortlisted";
+      shortlistBtn.classList.add("shortlisted");
+      shortlistBtn.disabled = true;
+    } else {
+      shortlistBtn.textContent = "♡ Shortlist";
+      shortlistBtn.classList.remove("shortlisted");
+      shortlistBtn.disabled = false;
+      shortlistBtn.onclick = () => {
+        addToShortlist(userUID, id, data);
+        shortlistBtn.textContent = "♥ Shortlisted";
+        shortlistBtn.classList.add("shortlisted");
+        shortlistBtn.disabled = true;
+      };
+    }
+  });
+
+  modal.style.display = "flex";
+  document.body.style.overflow = "hidden";
+}
+
+function closeModal() {
+  document.getElementById("item-modal").style.display = "none";
+  document.body.style.overflow = "";
 }
 
 async function addToShortlist(userUID, listingId, data) {
