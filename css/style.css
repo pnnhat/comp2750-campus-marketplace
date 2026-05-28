@@ -1,55 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap');
+
 /* ─── Font stack: system sans-serif ─────────────────────────────────────── */
 
 /* ─── CSS Variables — Light Mode ─────────────────────────────────────────── */
 :root {
   --color-bg-primary:             #ffffff;
-  --color-bg-secondary:           #f8f8f6;
-  --color-bg-tertiary:            #f0f0ee;
-  --color-text-primary:           #1a1a1a;
-  --color-text-secondary:         #666666;
-  --color-text-muted:             #aaaaaa;
-  --color-border:                 rgba(0, 0, 0, 0.10);
+  --color-bg-secondary:           #EDEBE5;
+  --color-bg-tertiary:            #f5f4f0;
+  --color-text-primary:           #373A36;
+  --color-text-secondary:         #5a5a58;
+  --color-text-muted:             #888884;
+  --color-border:                 rgba(55,58,54,0.12);
   --color-accent:                 #D6001C;
-  --color-accent-hover:           #b5001a;
-  --color-accent-subtle:          #fff0f1;
+  --color-accent-hover:           #A6192E;
+  --color-accent-subtle:          #fdf0f1;
   --color-accent-text:            #D6001C;
-  --color-dark-btn:               #1A1A2E;
+  --color-dark-btn:               #373A36;
   --color-badge-electronics-bg:   #eef0ff;
-  --color-badge-electronics-text: #3a4db7;
+  --color-badge-electronics-text: #415364;
   --color-badge-furniture-bg:     #e6f4f2;
-  --color-badge-furniture-text:   #0f6e56;
-  --color-badge-clothing-bg:      #fff0f1;
-  --color-badge-clothing-text:    #D6001C;
-  --color-badge-textbooks-bg:     #fdf3e3;
-  --color-badge-textbooks-text:   #8a5a00;
-  --color-success:                #1a7a4a;
-  --color-shadow:                 rgba(0, 0, 0, 0.06);
+  --color-badge-furniture-text:   #009174;
+  --color-badge-clothing-bg:      #fdf0f1;
+  --color-badge-clothing-text:    #A6192E;
+  --color-badge-textbooks-bg:     #EDEBE5;
+  --color-badge-textbooks-text:   #373A36;
+  --color-badge-accessories-bg:   #f5eef8;
+  --color-badge-accessories-text: #80225F;
+  --color-badge-fitness-bg:       #edf7f4;
+  --color-badge-fitness-text:     #009174;
+  --color-success:                #009174;
+  --color-alert:                  #BC4700;
+  --color-shadow:                 rgba(55,58,54,0.08);
 }
 
 /* ─── CSS Variables — Dark Mode ──────────────────────────────────────────── */
 [data-theme="dark"] {
-  --color-bg-primary:             #1a1a1a;
-  --color-bg-secondary:           #242424;
-  --color-bg-tertiary:            #2e2e2e;
-  --color-text-primary:           #f0f0ee;
-  --color-text-secondary:         #aaaaaa;
-  --color-text-muted:             #666666;
-  --color-border:                 rgba(255, 255, 255, 0.10);
-  --color-accent:                 #ff1f3a;
-  --color-accent-hover:           #e0001a;
+  --color-bg-primary:             #1e1e1c;
+  --color-bg-secondary:           #2a2a28;
+  --color-bg-tertiary:            #333330;
+  --color-text-primary:           #EDEBE5;
+  --color-text-secondary:         #b0ada6;
+  --color-text-muted:             #6e6b65;
+  --color-border:                 rgba(237,235,229,0.12);
+  --color-accent:                 #D6001C;
+  --color-accent-hover:           #ff1f3a;
   --color-accent-subtle:          #2e1215;
   --color-accent-text:            #ff6b7a;
-  --color-dark-btn:               #f0f0ee;
+  --color-dark-btn:               #EDEBE5;
   --color-badge-electronics-bg:   #1a1d35;
-  --color-badge-electronics-text: #8a9bff;
+  --color-badge-electronics-text: #8a9bdd;
   --color-badge-furniture-bg:     #0f2320;
-  --color-badge-furniture-text:   #5dcaa5;
+  --color-badge-furniture-text:   #4ecca3;
   --color-badge-clothing-bg:      #2e1215;
   --color-badge-clothing-text:    #ff6b7a;
-  --color-badge-textbooks-bg:     #2a1f0a;
-  --color-badge-textbooks-text:   #f0b855;
+  --color-badge-textbooks-bg:     #2a2a28;
+  --color-badge-textbooks-text:   #c8c4bc;
+  --color-badge-accessories-bg:   #2a1535;
+  --color-badge-accessories-text: #c992d8;
+  --color-badge-fitness-bg:       #0f2a22;
+  --color-badge-fitness-text:     #5dcaa5;
   --color-success:                #4ade80;
-  --color-shadow:                 rgba(0, 0, 0, 0.3);
+  --color-shadow:                 rgba(0,0,0,0.3);
 }
 
 /* ─── Reset ──────────────────────────────────────────────────────────────── */
@@ -65,10 +76,10 @@ html {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  font-family: 'DM Sans', sans-serif;
   background: var(--color-bg-primary);
   color: var(--color-text-primary);
-  line-height: 1.5;
+  line-height: 1.6;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -84,6 +95,11 @@ button {
   cursor: pointer;
 }
 
+h1, h2, .login-headline, .hero-heading, .nav-brand-name,
+.page-header h1, .nav-card-title {
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
 img {
   max-width: 100%;
   display: block;
@@ -91,7 +107,7 @@ img {
 
 /* ─── Navbar ─────────────────────────────────────────────────────────────── */
 .navbar {
-  height: 60px;
+  height: 80px;
   background: var(--color-bg-primary);
   border-bottom: 1px solid var(--color-border);
   padding: 0 28px;
@@ -120,8 +136,10 @@ img {
 }
 
 .nav-brand-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px;
   font-weight: 900;
-  font-size: 15px;
+  letter-spacing: -0.01em;
   color: var(--color-text-primary);
   white-space: nowrap;
 }
@@ -133,9 +151,9 @@ img {
 }
 
 .nav-pill {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
-  padding: 7px 16px;
+  padding: 10px 22px;
   border-radius: 999px;
   color: var(--color-text-secondary);
   background: transparent;
@@ -193,12 +211,12 @@ img {
 /* ─── Sign Out Button ────────────────────────────────────────────────────── */
 .nav-signout-btn {
   background: var(--color-dark-btn);
-  color: #fff;
+  color: #EDEBE5;
   border: none;
-  padding: 7px 18px;
+  padding: 12px 24px;
   border-radius: 999px;
   font-weight: 700;
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
   transition: opacity 0.15s;
   white-space: nowrap;
@@ -339,11 +357,12 @@ img {
 
 .login-left {
   flex: 1;
-  background: var(--color-accent);
-  padding: 52px 48px;
+  background: #A6192E;
+  padding: 60px 56px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 24px;
 }
 
 .login-left-content {
@@ -353,9 +372,8 @@ img {
 }
 
 .nav-mq-img {
-  height: 36px;
+  height: 52px;
   width: auto;
-  display: block;
 }
 
 .login-mq-img {
@@ -365,11 +383,13 @@ img {
 }
 
 .login-headline {
-  font-size: 80px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 72px;
   font-weight: 900;
-  color: #fff;
-  line-height: 1.0;
+  color: white;
+  line-height: 1;
   letter-spacing: -0.02em;
+  margin: 0;
 }
 
 .login-subtext {
@@ -405,7 +425,7 @@ img {
 }
 
 [data-theme="dark"] .login-right {
-  background: var(--color-bg-secondary);
+  background: var(--color-bg-primary);
 }
 
 .login-right-inner {
@@ -434,68 +454,74 @@ img {
 
 .btn-login {
   width: 100%;
-  background: transparent;
-  color: var(--color-text-primary);
-  border: 1.5px solid var(--color-border);
-  border-radius: 8px;
-  padding: 13px;
-  font-size: 14px;
+  background: #D6001C;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 14px 32px;
+  font-size: 15px;
   font-weight: 700;
   font-family: inherit;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
   cursor: pointer;
-  transition: border-color 0.15s, background 0.15s;
+  transition: background 0.15s;
 }
 
 .btn-login:hover {
-  border-color: var(--color-text-secondary);
-  background: var(--color-bg-secondary);
+  background: #A6192E;
 }
 
 /* ─── INDEX (Welcome) PAGE ───────────────────────────────────────────────── */
 .hero-section {
   background: var(--color-bg-secondary);
-  padding: 40px 36px;
+  padding: 80px 60px;
   border-bottom: 1px solid var(--color-border);
 }
 
 .hero-eyebrow {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.10em;
-  color: var(--color-accent);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  margin-bottom: 8px;
+  color: var(--color-accent);
+  margin: 0 0 12px;
 }
 
 .hero-heading {
-  font-size: 28px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 80px;
   font-weight: 900;
   letter-spacing: -0.02em;
-  color: var(--color-text-primary);
-  margin-bottom: 8px;
+  line-height: 1;
+  margin: 0 0 16px;
 }
 
 .hero-sub {
-  font-size: 13px;
+  font-size: 18px;
   color: var(--color-text-secondary);
+  margin: 0;
 }
 
 .nav-cards-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  padding: 28px 36px;
+  gap: 24px;
+  padding: 40px 60px;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .nav-card {
-  background: var(--color-bg-primary);
   border: 1px solid var(--color-border);
-  border-radius: 14px;
-  padding: 20px 18px;
+  border-radius: 16px;
+  padding: 32px 28px;
   cursor: pointer;
-  display: block;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  text-decoration: none;
   color: var(--color-text-primary);
+  background: var(--color-bg-primary);
+  display: block;
+  transition: border-color 0.15s;
 }
 
 .nav-card:hover {
@@ -504,13 +530,13 @@ img {
 }
 
 .nav-card-icon {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .nav-card-icon-marketplace {
@@ -529,32 +555,35 @@ img {
 }
 
 .nav-card-title {
-  font-size: 14px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px;
   font-weight: 700;
   margin-bottom: 6px;
 }
 
 .nav-card-desc {
-  font-size: 12px;
+  font-size: 15px;
+  line-height: 1.5;
   color: var(--color-text-secondary);
-  line-height: 1.4;
 }
 
 /* ─── PAGE HEADER (marketplace, mylistings, shortlist) ───────────────────── */
 .page-header {
-  padding: 28px 28px 0;
+  padding: 48px 60px 0;
 }
 
 .page-header h1 {
-  font-size: 32px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 56px;
   font-weight: 900;
   letter-spacing: -0.02em;
-  margin-bottom: 4px;
+  margin: 0;
 }
 
 .page-header p {
-  font-size: 12px;
+  font-size: 16px;
   color: var(--color-text-secondary);
+  margin-top: 6px;
 }
 
 /* ─── MARKETPLACE — Filter Chips ─────────────────────────────────────────── */
@@ -566,12 +595,12 @@ img {
 }
 
 .filter-chip {
-  background: var(--color-bg-primary);
-  color: var(--color-text-primary);
-  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-accent);
+  border: 2px solid var(--color-accent);
   border-radius: 999px;
-  padding: 6px 16px;
-  font-size: 12px;
+  padding: 10px 20px;
+  font-size: 14px;
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
@@ -585,6 +614,7 @@ img {
 .filter-chip.active {
   background: var(--color-accent);
   color: #fff;
+  border-color: var(--color-accent);
 }
 
 /* ─── MARKETPLACE & SHORTLIST — Items Grid ───────────────────────────────── */
@@ -606,7 +636,7 @@ img {
 }
 
 .item-card:hover {
-  box-shadow: 0 4px 16px var(--color-shadow);
+  box-shadow: 0 2px 8px var(--color-shadow);
 }
 
 .item-card-img {
@@ -635,10 +665,9 @@ img {
 }
 
 .item-card-name {
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
-  margin-top: 6px;
-  margin-bottom: 4px;
+  margin: 8px 0 4px;
 }
 
 .item-card-desc {
@@ -651,10 +680,10 @@ img {
 }
 
 .item-card-price {
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 900;
   color: var(--color-accent);
-  margin-bottom: 2px;
+  margin: 6px 0;
 }
 
 .item-card-price.trade {
@@ -670,13 +699,13 @@ img {
 /* ─── Shortlist Button ───────────────────────────────────────────────────── */
 .shortlist-btn {
   width: 100%;
-  border: 1.5px solid var(--color-accent);
+  border: 2px solid var(--color-accent);
   background: transparent;
   color: var(--color-accent);
   border-radius: 999px;
-  padding: 7px 0;
+  padding: 12px 0;
   font-weight: 700;
-  font-size: 11px;
+  font-size: 14px;
   font-family: inherit;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
@@ -700,9 +729,9 @@ img {
   border-radius: 8px;
   background: transparent;
   color: var(--color-text-primary);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
-  padding: 8px 0;
+  padding: 12px 0;
   cursor: pointer;
   font-family: inherit;
   transition: border-color 0.15s, color 0.15s;
@@ -723,8 +752,8 @@ img {
   color: var(--color-text-primary);
   border: 1.5px solid var(--color-border);
   border-radius: 8px;
-  padding: 8px 18px;
-  font-size: 12px;
+  padding: 12px 24px;
+  font-size: 14px;
   font-weight: 700;
   font-family: inherit;
   cursor: pointer;
@@ -759,11 +788,13 @@ img {
   background: var(--color-accent);
   color: #fff;
   border: none;
-  border-radius: 8px;
-  padding: 9px 20px;
-  font-size: 13px;
+  border-radius: 6px;
+  padding: 14px 32px;
+  font-size: 15px;
   font-weight: 700;
   font-family: inherit;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
   cursor: pointer;
   transition: background 0.15s;
 }
@@ -1044,4 +1075,22 @@ img {
 .theme-dropdown-item.active {
   font-weight: 700;
   color: var(--color-accent);
+}
+
+/* ─── Dark mode navbar overrides ────────────────────────────────────────── */
+[data-theme="dark"] .navbar {
+  background: #1e1e1c;
+  border-bottom: 2px solid #D6001C;
+}
+
+[data-theme="dark"] .nav-brand-name {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .nav-pill {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .nav-user-email {
+  color: rgba(255,255,255,0.6);
 }
