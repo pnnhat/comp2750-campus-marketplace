@@ -353,11 +353,37 @@ img {
   gap: 22px;
 }
 
-.login-headline {
-  font-size: 30px;
+.login-mq-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.login-mq-letters {
+  font-size: 26px;
   font-weight: 900;
   color: #fff;
-  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.login-mq-uni {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.login-mq-uni span {
+  font-size: 9px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.06em;
+}
+
+.login-headline {
+  font-size: 44px;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.05;
 }
 
 .login-subtext {
@@ -533,7 +559,7 @@ img {
 }
 
 .page-header h1 {
-  font-size: 22px;
+  font-size: 32px;
   font-weight: 900;
   letter-spacing: -0.02em;
   margin-bottom: 4px;
@@ -553,20 +579,20 @@ img {
 }
 
 .filter-chip {
-  background: var(--color-bg-tertiary);
+  background: var(--color-bg-primary);
   color: var(--color-text-primary);
-  border: none;
+  border: 1px solid var(--color-border);
   border-radius: 999px;
   padding: 6px 16px;
   font-size: 12px;
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
 
 .filter-chip:hover {
-  background: var(--color-border);
+  background: var(--color-bg-secondary);
 }
 
 .filter-chip.active {
@@ -684,12 +710,12 @@ img {
 .remove-btn {
   width: 100%;
   border: 1px solid var(--color-border);
-  border-radius: 999px;
+  border-radius: 8px;
   background: transparent;
-  color: var(--color-text-secondary);
-  font-size: 11px;
+  color: var(--color-text-primary);
+  font-size: 12px;
   font-weight: 700;
-  padding: 7px 0;
+  padding: 8px 0;
   cursor: pointer;
   font-family: inherit;
   transition: border-color 0.15s, color 0.15s;
@@ -706,9 +732,9 @@ img {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: var(--color-accent);
-  color: #fff;
-  border: none;
+  background: transparent;
+  color: var(--color-text-primary);
+  border: 1.5px solid var(--color-border);
   border-radius: 8px;
   padding: 8px 18px;
   font-size: 12px;
@@ -716,11 +742,12 @@ img {
   font-family: inherit;
   cursor: pointer;
   margin: 16px 28px;
-  transition: background 0.15s;
+  transition: background 0.15s, border-color 0.15s;
 }
 
 .add-listing-btn:hover {
-  background: var(--color-accent-hover);
+  background: var(--color-bg-secondary);
+  border-color: var(--color-text-secondary);
 }
 
 .add-listing-panel {
@@ -832,13 +859,19 @@ img {
   color: var(--color-accent);
 }
 
+.table-status-active {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-success);
+}
+
 .btn-delete {
   border: 1px solid var(--color-border);
-  border-radius: 999px;
-  padding: 5px 12px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--color-text-secondary);
+  border-radius: 8px;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-primary);
   background: transparent;
   cursor: pointer;
   font-family: inherit;

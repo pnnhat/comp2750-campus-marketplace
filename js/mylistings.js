@@ -104,6 +104,7 @@ function appendRow(id, data) {
     </td>
     <td><span class="badge ${badgeClass}">${escapeHtml(data.category)}</span></td>
     <td class="table-price">${escapeHtml(data.price)}</td>
+    <td><span class="table-status-active">Active</span></td>
     <td><button class="btn-delete">Delete</button></td>`;
   tbody.appendChild(tr);
 }
