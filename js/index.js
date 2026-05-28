@@ -1,18 +1,14 @@
-// js/index.js
-// Home page logic — requires auth, displays user info, handles sign out.
-
 import { requireAuth, handleSignOut } from "./auth-guard.js";
 
-// Require authentication before showing the page
+// Wait for auth state — redirect to login if not signed in
 requireAuth((user) => {
   // Display full email in navbar
-  const emailEl = document.getElementById("user-email");
-  if (emailEl) emailEl.textContent = user.email;
+  document.getElementById("user-email").textContent = user.email;
 
-  // Display name portion of email as greeting
-  const greetingEl = document.getElementById("user-greeting");
-  if (greetingEl) greetingEl.textContent = `Hey, ${user.email.split("@")[0]}`;
+  // Display name (part before @) in hero greeting
+  const name = user.email.split("@")[0];
+  document.getElementById("user-greeting").textContent = `Hey, ${name} 👋`;
+
+  // Wire sign out button
+  document.getElementById("signout-btn").addEventListener("click", handleSignOut);
 });
-
-// Sign out on button click
-document.getElementById("signout-btn")?.addEventListener("click", handleSignOut);

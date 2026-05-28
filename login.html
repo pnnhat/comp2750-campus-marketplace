@@ -63,11 +63,8 @@
   <script type="module" src="js/theme.js"></script>
   <script type="module">
     // ── Firebase Auth — sign in ──────────────────────────────────────────
-    // TODO Phase 2: import { auth } from "./js/firebase-config.js";
-    // TODO Phase 2: import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
     import { auth } from "./js/firebase-config.js";
-    import { signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
     // If user is already signed in, redirect to home page immediately
     onAuthStateChanged(auth, (user) => {

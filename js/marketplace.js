@@ -6,7 +6,7 @@ import { db } from "./firebase-config.js";
 import {
   collection, query, where, getDocs,
   doc, getDoc, setDoc, serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // Require authentication before showing the page
 requireAuth(async (user) => {

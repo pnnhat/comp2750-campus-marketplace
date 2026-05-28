@@ -4,7 +4,7 @@
 // All page logic must go INSIDE the onAuthStateChanged callback — never outside it.
 
 import { auth } from "./firebase-config.js";
-import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 // Redirect to login if not signed in
 // Calls the provided callback with the user object if signed in
