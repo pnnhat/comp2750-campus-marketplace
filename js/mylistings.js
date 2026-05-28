@@ -1,5 +1,5 @@
 // js/mylistings.js
-// Manages the current user's listings â€” load, add, and delete.
+// Manages the current user's listings — load, add, and delete.
 
 import { requireAuth, handleSignOut } from "./auth-guard.js";
 import { db, storage } from "./firebase-config.js";
@@ -137,8 +137,7 @@ function initAddListingForm(user) {
       }
     });
 
-  listingForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  document.getElementById("submit-listing-btn").addEventListener("click", async () => {
     console.log("Form submitted");
 
     const title       = document.getElementById("field-title").value.trim();

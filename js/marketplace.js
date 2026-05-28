@@ -24,15 +24,6 @@ requireAuth(async (user) => {
   initFilterChips();
 });
 
-// ── Category filter chips ─────────────────────────────────────────────────
-
-
-// ── Shortlist button toggling (static UI — Firebase write added in Phase 2) ─
-// initShortlistButtons removed — handled by renderCard()</nfunction initShortlistButtons_REMOVED() {
-  // TODO: Firebase — setDoc to shortlists/{uid}/items/{listingId}
-
-
-// ── Sign out ──────────────────────────────────────────────────────────────
 // Query listings where the seller is not the current user
 async function loadMarketplaceItems(user) {
   const grid = document.getElementById("listings-grid");

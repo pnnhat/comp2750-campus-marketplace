@@ -738,13 +738,7 @@ img {
 }
 
 .add-listing-panel {
-  max-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s ease;
-}
-
-.add-listing-panel.open {
-  max-height: 700px;
 }
 
 .add-listing-form-inner {
