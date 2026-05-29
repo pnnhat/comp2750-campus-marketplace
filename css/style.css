@@ -860,7 +860,6 @@ img {
   background: var(--color-bg-primary);
   border: 1px solid var(--color-border);
   border-radius: 12px;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
@@ -870,6 +869,7 @@ img {
   aspect-ratio: 1 / 1;
   background: var(--color-bg-tertiary);
   overflow: hidden;
+  border-radius: 12px 12px 0 0;
 }
 
 .my-listing-img {
@@ -975,7 +975,7 @@ img {
   border-radius: 10px;
   box-shadow: 0 4px 16px var(--color-shadow);
   min-width: 180px;
-  z-index: 100;
+  z-index: 500;
   overflow: hidden;
 }
 
