@@ -116,42 +116,74 @@ async function checkIfShortlisted(userUID, listingId) {
 }
 
 function openModal(id, data, userUID) {
-  currentModalId = id;
+  currentModalId   = id;
   currentModalData = data;
 
-  const modal = document.getElementById("item-modal");
-  const badgeClass = `badge-${(data.category || "").toLowerCase()}`;
+  // Build images array — handle both formats
+  if (data.imageURLs && data.imageURLs.length > 0) {
+    modalImages = data.imageURLs;
+  } else if (data.imageURL) {
+    modalImages = [data.imageURL];
+  } else {
+    modalImages = [];
+  }
+  modalCurrentIndex = 0;
 
+  // Populate details panel
+  const badgeClass = `badge-${(data.category || "").toLowerCase()}`;
   document.getElementById("modal-badge").className =
     `badge modal-badge ${badgeClass}`;
-  document.getElementById("modal-badge").textContent = data.category;
-  document.getElementById("modal-title").textContent = data.title;
-  document.getElementById("modal-desc").textContent = data.description;
+  document.getElementById("modal-badge").textContent  = data.category;
+  document.getElementById("modal-title").textContent  = data.title;
+  document.getElementById("modal-desc").textContent   = data.description;
+  document.getElementById("modal-seller").textContent =
+    "Listed by " + data.sellerEmail;
 
   const priceEl = document.getElementById("modal-price");
   if (data.price === "Trade") {
     priceEl.textContent = "Trade";
-    priceEl.className = "modal-price trade";
+    priceEl.className   = "modal-price trade";
   } else {
     priceEl.textContent = data.price.startsWith("$")
       ? data.price : "$" + data.price;
     priceEl.className = "modal-price";
   }
 
-  document.getElementById("modal-seller").textContent =
-    "Listed by " + data.sellerEmail;
-
-  const img = document.getElementById("modal-img");
+  // Set up image gallery
+  const mainImg     = document.getElementById("modal-main-img");
   const placeholder = document.getElementById("modal-img-placeholder");
-  if (data.imageURL) {
-    img.src = data.imageURL;
-    img.style.display = "block";
+
+  if (modalImages.length > 0) {
+    mainImg.src           = modalImages[0];
+    mainImg.style.display = "block";
     placeholder.style.display = "none";
   } else {
-    img.style.display = "none";
-    placeholder.style.display = "block";
+    mainImg.style.display     = "none";
+    placeholder.style.display = "flex";
   }
 
+  // Show/hide arrows
+  const showArrows = modalImages.length > 1;
+  document.getElementById("modal-prev").style.display =
+    showArrows ? "flex" : "none";
+  document.getElementById("modal-next").style.display =
+    showArrows ? "flex" : "none";
+
+  // Wire arrow buttons
+  document.getElementById("modal-prev").onclick = () => {
+    modalCurrentIndex =
+      (modalCurrentIndex - 1 + modalImages.length) % modalImages.length;
+    showModalImage(modalCurrentIndex);
+  };
+  document.getElementById("modal-next").onclick = () => {
+    modalCurrentIndex = (modalCurrentIndex + 1) % modalImages.length;
+    showModalImage(modalCurrentIndex);
+  };
+
+  // Build thumbnails
+  buildThumbnails();
+
+  // Shortlist button state
   const shortlistBtn = document.getElementById("modal-shortlist-btn");
   checkIfShortlisted(userUID, id).then(isShortlisted => {
     if (isShortlisted) {
@@ -171,7 +203,8 @@ function openModal(id, data, userUID) {
     }
   });
 
-  modal.style.display = "flex";
+  // Show modal
+  document.getElementById("item-modal").style.display = "flex";
   document.body.style.overflow = "hidden";
 }
 
