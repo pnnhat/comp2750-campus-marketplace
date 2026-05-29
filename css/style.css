@@ -844,38 +844,32 @@ img {
   color: var(--color-text-primary);
 }
 
-/* ─── My Listings Card Layout ───────────────────────────────────────────── */
+/* ─── My Listings Card Grid ───────────────────────────────────────────── */
 .my-listings-container {
   padding: 0 60px 60px;
   max-width: 900px;
 }
 
-.my-listings-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+.my-listings-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
 
 .my-listing-card {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  overflow: hidden;
   display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 16px 0;
-  border-bottom: 1px solid var(--color-border);
-  position: relative;
-}
-
-.my-listing-card:last-child {
-  border-bottom: none;
+  flex-direction: column;
 }
 
 .my-listing-img-wrap {
-  width: 100px;
-  height: 100px;
-  border-radius: 8px;
-  overflow: hidden;
-  flex-shrink: 0;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   background: var(--color-bg-tertiary);
+  overflow: hidden;
 }
 
 .my-listing-img {
@@ -895,15 +889,16 @@ img {
   font-size: 24px;
 }
 
-.my-listing-info {
-  flex: 1;
+.my-listing-body {
+  padding: 12px 14px;
   display: flex;
   flex-direction: column;
   gap: 4px;
+  flex: 1;
 }
 
 .my-listing-title {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--color-text-primary);
 }
@@ -916,19 +911,22 @@ img {
 }
 
 .my-listing-meta {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--color-text-muted);
+  margin-top: 2px;
 }
 
 .my-listing-actions {
   display: flex;
-  align-items: center;
   gap: 8px;
-  flex-shrink: 0;
+  padding: 10px 14px;
+  border-top: 1px solid var(--color-border);
+  align-items: center;
 }
 
 .my-listing-mark-sold {
-  padding: 9px 18px;
+  flex: 1;
+  padding: 9px 0;
   border-radius: 8px;
   font-size: 13px;
   font-weight: 700;
@@ -937,7 +935,6 @@ img {
   color: var(--color-text-primary);
   cursor: pointer;
   font-family: inherit;
-  white-space: nowrap;
 }
 
 .my-listing-mark-sold:hover {
@@ -1471,4 +1468,135 @@ img {
   font-size: 12px;
   font-weight: 700;
   color: var(--color-text-muted);
+}
+
+/* ─── Edit Listing Modal ─────────────────────────────────────────────────── */
+.edit-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.edit-modal-container {
+  background: var(--color-bg-primary);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px var(--color-shadow);
+}
+
+.edit-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 0;
+}
+
+.edit-modal-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 24px;
+  font-weight: 900;
+  margin: 0;
+  color: var(--color-text-primary);
+}
+
+.edit-modal-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+}
+
+.edit-modal-close:hover {
+  background: var(--color-accent);
+  color: white;
+  border-color: var(--color-accent);
+}
+
+.edit-modal-body {
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.edit-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+}
+
+.edit-current-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.edit-img-wrap {
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.edit-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid var(--color-border);
+}
+
+.edit-img-delete {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: white;
+  border: none;
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+}
+
+.edit-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+@media (max-width: 900px) {
+  .my-listings-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .my-listings-grid {
+    grid-template-columns: 1fr;
+  }
 }

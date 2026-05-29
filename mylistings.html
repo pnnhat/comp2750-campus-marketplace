@@ -110,9 +110,9 @@
     </div>
   </div>
 
-  <!-- Listings card list -->
+  <!-- Listings card grid -->
   <div class="my-listings-container" id="table-container">
-    <div class="my-listings-list" id="listings-tbody"></div>
+    <div class="my-listings-grid" id="listings-tbody"></div>
   </div>
 
   <!-- Empty state (hidden by default) -->
@@ -127,6 +127,54 @@
     <span>© 2026 Campus Marketplace</span>
     <span>Built for COMP2750 · Macquarie University</span>
   </footer>
+
+  <!-- Edit listing modal -->
+  <div class="edit-modal-overlay" id="edit-modal" style="display:none;">
+    <div class="edit-modal-container">
+      <div class="edit-modal-header">
+        <h3 class="edit-modal-title">Edit Listing</h3>
+        <button class="edit-modal-close" id="edit-modal-close">✕</button>
+      </div>
+      <div class="edit-modal-body">
+
+        <!-- Current images -->
+        <div class="edit-section-label">Current Images</div>
+        <div class="edit-current-images" id="edit-current-images"></div>
+
+        <!-- Add more images -->
+        <div class="edit-section-label" style="margin-top:16px;">Add More Images</div>
+        <input type="file" id="edit-new-images"
+               accept="image/*" multiple
+               class="form-input"
+               style="padding:6px 12px;">
+        <div id="edit-new-preview"
+             style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;"></div>
+
+        <!-- Price -->
+        <div class="edit-section-label" style="margin-top:16px;">Price</div>
+        <input class="form-input" type="text" id="edit-price-input"
+               placeholder='$20 or "Trade"'>
+
+        <!-- Status -->
+        <div class="edit-section-label" style="margin-top:16px;">Status</div>
+        <select class="form-select" id="edit-status-input">
+          <option value="Active">Active</option>
+          <option value="Pending">Pending</option>
+          <option value="Sold">Sold</option>
+        </select>
+
+        <div class="form-error" id="edit-form-error"></div>
+
+        <div class="edit-modal-footer">
+          <button type="button" class="btn-cancel-text"
+                  id="edit-cancel-btn">Cancel</button>
+          <button type="button" class="btn-post"
+                  id="edit-save-btn">Save changes →</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
   <script type="module" src="js/theme.js"></script>
   <script type="module" src="js/mylistings.js"></script>

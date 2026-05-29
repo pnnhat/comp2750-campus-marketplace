@@ -26,6 +26,22 @@ requireAuth(async (user) => {
   // Set up add-listing form and toggle
   initAddListingToggle();
   initAddListingForm(user);
+
+  // Wire edit modal buttons
+  document.getElementById("edit-modal-close")
+    .addEventListener("click", closeEditModal);
+  document.getElementById("edit-cancel-btn")
+    .addEventListener("click", closeEditModal);
+  document.getElementById("edit-save-btn")
+    .addEventListener("click", () => {
+      if (editingId) saveEdit(editingId, editingData, editingUID);
+    });
+  document.getElementById("edit-modal")
+    .addEventListener("click", (e) => {
+      if (e.target === document.getElementById("edit-modal")) {
+        closeEditModal();
+      }
+    });
 });
 
 // Query and render the current user's listings
@@ -54,7 +70,7 @@ async function loadMyListings(userUID) {
   snapshot.forEach(docSnap => renderRow(docSnap.id, docSnap.data(), userUID));
 }
 
-// Build and inject a card for a single listing
+// Build and inject a grid card for a single listing
 function renderRow(id, data, userUID) {
   const container = document.getElementById("listings-tbody");
   const card = document.createElement("div");
@@ -68,8 +84,6 @@ function renderRow(id, data, userUID) {
     "Sold":    "status-sold"
   }[status] || "status-active";
 
-  const priceDisplay = data.price || "—";
-
   // Get first image — handle both imageURLs array and single imageURL
   const firstImage = (data.imageURLs && data.imageURLs.length > 0)
     ? data.imageURLs[0]
@@ -79,34 +93,40 @@ function renderRow(id, data, userUID) {
     <div class="my-listing-img-wrap">
       ${firstImage
         ? `<img src="${firstImage}" class="my-listing-img" alt="${data.title}"
-               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-           <div class="my-listing-img-placeholder" style="display:none;"></div>`
-        : `<div class="my-listing-img-placeholder"></div>`}
+               onerror="this.style.display='none';
+               this.nextElementSibling.style.display='flex';">
+           <div class="my-listing-img-placeholder" style="display:none;">📦</div>`
+        : `<div class="my-listing-img-placeholder">📦</div>`}
     </div>
-    <div class="my-listing-info">
+    <div class="my-listing-body">
       <div class="my-listing-title">${data.title}</div>
-      <div class="my-listing-price" id="price-cell-${id}">${priceDisplay}</div>
+      <div class="my-listing-price">${data.price || "—"}</div>
+      <span class="${statusClass}">${status}</span>
       <div class="my-listing-meta">Listed to Marketplace</div>
-      <div id="status-cell-${id}">
-        <span class="${statusClass}">${status}</span>
-      </div>
     </div>
     <div class="my-listing-actions">
-      <button class="my-listing-mark-sold btn-mark-sold" id="mark-sold-btn-${id}">
-        ${status === "Sold" ? "✓ Sold" : "✓ Mark as Sold"}
+      <button class="my-listing-mark-sold" id="mark-sold-btn-${id}">
+        ✓ ${status === "Sold" ? "Sold" : "Mark as Sold"}
       </button>
       <div class="my-listing-dots-wrap">
         <button class="my-listing-dots-btn" id="dots-btn-${id}">•••</button>
-        <div class="my-listing-dropdown" id="dropdown-${id}" style="display:none;">
-          <button class="dropdown-item" id="pending-btn-${id}">⏸ Mark as Pending</button>
-          <button class="dropdown-item" id="edit-btn-${id}">✎ Edit Listing</button>
-          <button class="dropdown-item dropdown-item-danger" id="delete-btn-${id}">🗑 Delete Listing</button>
+        <div class="my-listing-dropdown"
+             id="dropdown-${id}" style="display:none;">
+          <button class="dropdown-item" id="pending-btn-${id}">
+            ⏸ Mark as Pending
+          </button>
+          <button class="dropdown-item" id="edit-btn-${id}">
+            ✎ Edit Listing
+          </button>
+          <button class="dropdown-item dropdown-item-danger"
+                  id="delete-btn-${id}">
+            🗑 Delete Listing
+          </button>
         </div>
       </div>
     </div>
   `;
 
-  // Wire mark as sold button
   card.querySelector(`#mark-sold-btn-${id}`)
     .addEventListener("click", () => markAsSold(id, data, userUID));
 
@@ -176,41 +196,143 @@ async function togglePending(id, data, userUID) {
   }
 }
 
-// Open inline edit for price
+// Track which listing is being edited
+let editingId   = null;
+let editingData = null;
+let editingUID  = null;
+let imagesToDelete = [];
+
 function openEditModal(id, data, userUID) {
-  const priceCell = document.getElementById(`price-cell-${id}`);
-  if (!priceCell) return;
-  priceCell.innerHTML = `
-    <div style="display:flex;gap:6px;align-items:center;margin-top:4px;">
-      <input class="edit-input" id="edit-price-${id}"
-             type="text" value="${data.price || ""}"
-             placeholder="$20 or Trade"
-             style="width:100px;">
-      <button class="btn-save" id="save-btn-${id}">Save</button>
-    </div>
-  `;
-  document.getElementById(`save-btn-${id}`)
-    .addEventListener("click", () => saveEdit(id, data, userUID));
+  editingId   = id;
+  editingData = data;
+  editingUID  = userUID;
+  imagesToDelete = [];
+
+  document.getElementById("edit-price-input").value  = data.price  || "";
+  document.getElementById("edit-status-input").value = data.status || "Active";
+  document.getElementById("edit-form-error").textContent = "";
+
+  document.getElementById("edit-new-preview").innerHTML = "";
+  document.getElementById("edit-new-images").value = "";
+
+  const currentImagesEl = document.getElementById("edit-current-images");
+  currentImagesEl.innerHTML = "";
+
+  const images = (data.imageURLs && data.imageURLs.length > 0)
+    ? data.imageURLs
+    : (data.imageURL ? [data.imageURL] : []);
+
+  if (images.length === 0) {
+    currentImagesEl.innerHTML =
+      '<p style="font-size:13px;color:var(--color-text-muted);">No images yet.</p>';
+  } else {
+    images.forEach((url, i) => {
+      const wrap = document.createElement("div");
+      wrap.className = "edit-img-wrap";
+      wrap.innerHTML = `
+        <img src="${url}" class="edit-thumb" alt="Image ${i+1}">
+        <button class="edit-img-delete" data-url="${url}">✕</button>
+      `;
+      wrap.querySelector(".edit-img-delete")
+        .addEventListener("click", (e) => {
+          const urlToDelete = e.currentTarget.dataset.url;
+          imagesToDelete.push(urlToDelete);
+          wrap.style.opacity = "0.3";
+          wrap.style.pointerEvents = "none";
+          e.currentTarget.textContent = "✓";
+          e.currentTarget.style.background = "#009174";
+        });
+      currentImagesEl.appendChild(wrap);
+    });
+  }
+
+  // Wire new-image file picker (replace listener each open)
+  const newImagesInput = document.getElementById("edit-new-images");
+  const newInputClone  = newImagesInput.cloneNode(true);
+  newImagesInput.parentNode.replaceChild(newInputClone, newImagesInput);
+  newInputClone.addEventListener("change", (e) => {
+    const files   = Array.from(e.target.files);
+    const preview = document.getElementById("edit-new-preview");
+    preview.innerHTML = "";
+    preview.style.display = files.length ? "flex" : "none";
+    files.forEach(file => {
+      const img = document.createElement("img");
+      img.src = URL.createObjectURL(file);
+      img.style.cssText =
+        "width:72px;height:72px;object-fit:cover;" +
+        "border-radius:6px;border:2px solid var(--color-border);";
+      preview.appendChild(img);
+    });
+  });
+
+  document.getElementById("edit-modal").style.display = "flex";
+  document.body.style.overflow = "hidden";
 }
 
-// Save the edited price to Firestore
+// Save edits (price, status, images) to Firestore
 async function saveEdit(id, data, userUID) {
-  const priceInput = document.getElementById(`edit-price-${id}`);
-  if (!priceInput) return;
-  const newPrice = priceInput.value.trim();
-  if (!newPrice) { alert("Price cannot be empty."); return; }
+  const newPrice  = document.getElementById("edit-price-input").value.trim();
+  const newStatus = document.getElementById("edit-status-input").value;
+  const newFiles  = Array.from(document.getElementById("edit-new-images").files);
+  const errorDiv  = document.getElementById("edit-form-error");
+  const saveBtn   = document.getElementById("edit-save-btn");
+
+  if (!newPrice) {
+    errorDiv.textContent = "Price cannot be empty.";
+    return;
+  }
+  errorDiv.textContent = "";
+
+  saveBtn.textContent = "Saving...";
+  saveBtn.disabled    = true;
+
   try {
+    let currentImages = (data.imageURLs && data.imageURLs.length > 0)
+      ? [...data.imageURLs]
+      : (data.imageURL ? [data.imageURL] : []);
+
+    currentImages = currentImages.filter(url => !imagesToDelete.includes(url));
+
+    for (const file of newFiles) {
+      const filename   = `${Date.now()}_${file.name}`;
+      const storageRef = ref(storage, `listings/${userUID}/${filename}`);
+      const snap = await uploadBytes(storageRef, file);
+      const url  = await getDownloadURL(snap.ref);
+      currentImages.push(url);
+    }
+
     await updateDoc(doc(db, "listings", id), {
-      price:  newPrice,
-      status: data.status || "Active"
+      price:     newPrice,
+      status:    newStatus,
+      imageURLs: currentImages,
+      imageURL:  currentImages[0] || ""
     });
-    data.price = newPrice;
+
+    data.price     = newPrice;
+    data.status    = newStatus;
+    data.imageURLs = currentImages;
+    data.imageURL  = currentImages[0] || "";
+
+    closeEditModal();
     document.getElementById(`row-${id}`)?.remove();
     renderRow(id, data, userUID);
+
   } catch (err) {
     console.error("Error saving edit:", err);
-    alert("Failed to save. Please try again.");
+    errorDiv.textContent = "Failed to save. Please try again.";
+  } finally {
+    saveBtn.textContent = "Save changes →";
+    saveBtn.disabled    = false;
   }
+}
+
+function closeEditModal() {
+  document.getElementById("edit-modal").style.display = "none";
+  document.body.style.overflow = "";
+  editingId      = null;
+  editingData    = null;
+  editingUID     = null;
+  imagesToDelete = [];
 }
 
 // Delete a listing document from Firestore and remove its card
