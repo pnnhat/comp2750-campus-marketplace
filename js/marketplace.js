@@ -11,6 +11,8 @@ import {
 // Module-level state for the open modal
 let currentModalId = null;
 let currentModalData = null;
+let modalImages = [];
+let modalCurrentIndex = 0;
 
 // Require authentication before showing the page
 requireAuth(async (user) => {
@@ -176,6 +178,33 @@ function openModal(id, data, userUID) {
 function closeModal() {
   document.getElementById("item-modal").style.display = "none";
   document.body.style.overflow = "";
+  modalImages = [];
+  modalCurrentIndex = 0;
+}
+
+function showModalImage(index) {
+  if (modalImages.length === 0) return;
+  modalCurrentIndex = (index + modalImages.length) % modalImages.length;
+  const mainImg = document.getElementById("modal-main-img");
+  mainImg.src = modalImages[modalCurrentIndex];
+  // Update active thumbnail
+  document.querySelectorAll(".modal-thumb").forEach((t, i) => {
+    t.classList.toggle("active", i === modalCurrentIndex);
+  });
+}
+
+function buildThumbnails() {
+  const strip = document.getElementById("modal-thumbnails");
+  strip.innerHTML = "";
+  if (modalImages.length <= 1) { strip.style.display = "none"; return; }
+  strip.style.display = "flex";
+  modalImages.forEach((url, i) => {
+    const img = document.createElement("img");
+    img.src = url;
+    img.className = `modal-thumb${i === 0 ? " active" : ""}`;
+    img.addEventListener("click", () => showModalImage(i));
+    strip.appendChild(img);
+  });
 }
 
 async function addToShortlist(userUID, listingId, data) {

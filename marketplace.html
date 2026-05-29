@@ -71,22 +71,39 @@
 
   <!-- Item detail modal -->
   <div class="modal-overlay" id="item-modal" style="display:none;">
-    <div class="modal-container">
-      <button class="modal-close" id="modal-close">✕</button>
-      <div class="modal-image-wrap">
-        <img class="modal-img" id="modal-img" src="" alt="">
-        <div class="modal-img-placeholder" id="modal-img-placeholder"
-             style="display:none;"></div>
+    <div class="modal-fullscreen">
+
+      <!-- Close button top left -->
+      <button class="modal-close-btn" id="modal-close">✕</button>
+
+      <!-- Left: image gallery -->
+      <div class="modal-gallery">
+        <div class="modal-gallery-main">
+          <img class="modal-main-img" id="modal-main-img" src="" alt="">
+          <div class="modal-img-placeholder" id="modal-img-placeholder"
+               style="display:none;"></div>
+          <button class="modal-arrow modal-arrow-left"
+                  id="modal-prev" style="display:none;">&#8249;</button>
+          <button class="modal-arrow modal-arrow-right"
+                  id="modal-next" style="display:none;">&#8250;</button>
+        </div>
+        <div class="modal-thumbnails" id="modal-thumbnails"></div>
       </div>
-      <div class="modal-body">
+
+      <!-- Right: item details -->
+      <div class="modal-details">
         <span class="badge modal-badge" id="modal-badge"></span>
         <h2 class="modal-title" id="modal-title"></h2>
-        <p class="modal-desc" id="modal-desc"></p>
         <div class="modal-price" id="modal-price"></div>
         <div class="modal-seller" id="modal-seller"></div>
+        <div class="modal-divider"></div>
+        <p class="modal-desc-label">Description</p>
+        <p class="modal-desc" id="modal-desc"></p>
+        <div class="modal-divider"></div>
         <button class="shortlist-btn modal-shortlist-btn"
-                id="modal-shortlist-btn">♡ Shortlist</button>
+                id="modal-shortlist-btn">&#9825; Shortlist</button>
       </div>
+
     </div>
   </div>
 

@@ -1125,79 +1125,140 @@ img {
 /* ─── Item Detail Modal ──────────────────────────────────────────────────── */
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
   z-index: 2000;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
 }
 
-.modal-container {
-  background: var(--color-bg-primary);
-  border-radius: 16px;
-  max-width: 640px;
-  width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
+.modal-fullscreen {
   position: relative;
   display: flex;
-  flex-direction: column;
-}
-
-.modal-close {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  background: var(--color-bg-secondary);
-  border: 1px solid var(--color-border);
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  font-size: 14px;
-  cursor: pointer;
-  color: var(--color-text-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-  font-family: inherit;
-}
-
-.modal-close:hover {
-  background: var(--color-accent);
-  color: white;
-  border-color: var(--color-accent);
-}
-
-.modal-image-wrap {
-  width: 100%;
-  height: 280px;
-  border-radius: 16px 16px 0 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--color-bg-primary);
   overflow: hidden;
 }
 
-.modal-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.modal-close-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 2100;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.modal-close-btn:hover {
+  background: var(--color-accent);
+}
+
+.modal-gallery {
+  flex: 1.2;
+  background: #111;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.modal-gallery-main {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.modal-main-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 .modal-img-placeholder {
   width: 100%;
   height: 100%;
-  background: var(--color-bg-tertiary);
+  background: #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.modal-body {
-  padding: 28px 32px 32px;
+.modal-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  font-size: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+  z-index: 10;
+}
+
+.modal-arrow:hover {
+  background: rgba(0,0,0,0.8);
+}
+
+.modal-arrow-left  { left: 16px; }
+.modal-arrow-right { right: 16px; }
+
+.modal-thumbnails {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  overflow-x: auto;
+  background: #1a1a1a;
+  min-height: 80px;
+  align-items: center;
+}
+
+.modal-thumb {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 0.6;
+  border: 2px solid transparent;
+  flex-shrink: 0;
+  transition: opacity 0.15s, border-color 0.15s;
+}
+
+.modal-thumb.active {
+  opacity: 1;
+  border-color: var(--color-accent);
+}
+
+.modal-details {
+  width: 400px;
+  flex-shrink: 0;
+  padding: 48px 36px;
+  overflow-y: auto;
+  background: var(--color-bg-primary);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
 
 .modal-badge {
@@ -1206,26 +1267,20 @@ img {
 
 .modal-title {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 36px;
+  font-size: 40px;
   font-weight: 900;
   letter-spacing: -0.01em;
   margin: 0;
   color: var(--color-text-primary);
-}
-
-.modal-desc {
-  font-size: 15px;
-  line-height: 1.7;
-  color: var(--color-text-secondary);
-  margin: 0;
-  white-space: pre-wrap;
+  line-height: 1.1;
 }
 
 .modal-price {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 40px;
+  font-size: 44px;
   font-weight: 900;
   color: var(--color-accent);
+  line-height: 1;
 }
 
 .modal-price.trade {
@@ -1237,10 +1292,34 @@ img {
   color: var(--color-text-muted);
 }
 
-.modal-shortlist-btn {
-  margin-top: 8px;
-  padding: 14px;
+.modal-divider {
+  height: 1px;
+  background: var(--color-border);
+}
+
+.modal-desc-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.modal-desc {
   font-size: 15px;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.modal-shortlist-btn {
+  width: 100%;
+  padding: 16px;
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: auto;
 }
 
 /* ─── My Listings — Edit / Status styles ────────────────────────────────── */

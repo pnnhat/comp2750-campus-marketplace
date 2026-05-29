@@ -61,59 +61,40 @@ function renderRow(id, data, userUID) {
   tr.id = `row-${id}`;
   const badgeClass = `badge-${(data.category || "").toLowerCase()}`;
   const status = data.status || "Active";
-
   const statusClass = {
     "Active":  "status-active",
     "Pending": "status-pending",
     "Sold":    "status-sold"
   }[status] || "status-active";
-
   tr.innerHTML = `
     <td>
       <div class="table-item-title">${data.title}</div>
       <div class="table-item-desc">${data.description}</div>
     </td>
-    <td>
-      <span class="badge ${badgeClass}">${data.category}</span>
-    </td>
-    <td class="table-price" id="price-display-${id}">
-      ${data.price}
-    </td>
-    <td>
-      <span class="${statusClass}" id="status-display-${id}">
-        ${status}
-      </span>
-    </td>
+    <td><span class="badge ${badgeClass}">${data.category || "\u2014"}</span></td>
+    <td class="table-price" id="price-cell-${id}">${data.price || "\u2014"}</td>
+    <td id="status-cell-${id}"><span class="${statusClass}">${status}</span></td>
     <td class="action-btns">
       <button class="btn-edit" id="edit-btn-${id}">Edit</button>
       <button class="btn-delete" id="delete-btn-${id}">Delete</button>
     </td>
   `;
-
   tr.querySelector(`#delete-btn-${id}`)
     .addEventListener("click", () => deleteListing(id, userUID));
-
   tr.querySelector(`#edit-btn-${id}`)
     .addEventListener("click", () => openEditRow(id, data, userUID));
-
   tbody.appendChild(tr);
 }
 
 // Open inline edit mode for a listing row
 function openEditRow(id, data, userUID) {
-  const priceCell   = document.getElementById(`price-display-${id}`);
-  const statusCell  = document.getElementById(`status-display-${id}`);
-  const editBtn     = document.getElementById(`edit-btn-${id}`);
-  const currentPrice  = data.price || "";
+  const priceCell  = document.getElementById(`price-cell-${id}`);
+  const statusCell = document.getElementById(`status-cell-${id}`);
+  const editBtn    = document.getElementById(`edit-btn-${id}`);
+  if (!priceCell || !statusCell || !editBtn) return;
+  const currentPrice  = data.price  || "";
   const currentStatus = data.status || "Active";
-
-  priceCell.innerHTML = `
-    <input class="edit-input" id="edit-price-${id}"
-           type="text" value="${currentPrice}"
-           placeholder='e.g. $20 or "Trade"'
-           style="width:90px;">
-  `;
-
+  priceCell.innerHTML = `<input class="edit-input" id="edit-price-${id}" type="text" value="${currentPrice}" placeholder='$20 or Trade'>`;
   statusCell.innerHTML = `
     <select class="edit-select" id="edit-status-${id}">
       <option value="Active"  ${currentStatus === "Active"  ? "selected" : ""}>Active</option>
@@ -121,34 +102,33 @@ function openEditRow(id, data, userUID) {
       <option value="Sold"    ${currentStatus === "Sold"    ? "selected" : ""}>Sold</option>
     </select>
   `;
-
-  editBtn.textContent = "Save";
-  editBtn.classList.add("btn-save");
-  editBtn.classList.remove("btn-edit");
-  editBtn.onclick = () => saveEdit(id, data, userUID);
+  const newBtn = document.createElement("button");
+  newBtn.textContent = "Save";
+  newBtn.className = "btn-save";
+  newBtn.id = `edit-btn-${id}`;
+  newBtn.addEventListener("click", () => saveEdit(id, data, userUID));
+  editBtn.replaceWith(newBtn);
 }
 
 // Save the edited price and status to Firestore
 async function saveEdit(id, data, userUID) {
-  const newPrice  = document.getElementById(`edit-price-${id}`).value.trim();
-  const newStatus = document.getElementById(`edit-status-${id}`).value;
-
-  if (!newPrice) {
-    alert("Price cannot be empty.");
-    return;
+  const priceInput  = document.getElementById(`edit-price-${id}`);
+  const statusInput = document.getElementById(`edit-status-${id}`);
+  if (!priceInput || !statusInput) return;
+  const newPrice  = priceInput.value.trim();
+  const newStatus = statusInput.value;
+  if (!newPrice) { alert("Price cannot be empty."); return; }
+  try {
+    await updateDoc(doc(db, "listings", id), { price: newPrice, status: newStatus });
+    data.price  = newPrice;
+    data.status = newStatus;
+    const tr = document.getElementById(`row-${id}`);
+    if (tr) tr.remove();
+    renderRow(id, data, userUID);
+  } catch (err) {
+    console.error("Error saving edit:", err);
+    alert("Failed to save. Please try again.");
   }
-
-  await updateDoc(doc(db, "listings", id), {
-    price:  newPrice,
-    status: newStatus
-  });
-
-  data.price  = newPrice;
-  data.status = newStatus;
-
-  const tr = document.getElementById(`row-${id}`);
-  tr.remove();
-  renderRow(id, data, userUID);
 }
 
 // Delete a listing document from Firestore and remove its table row
@@ -193,18 +173,20 @@ function initAddListingForm(user) {
 
   const formPanel = document.getElementById("add-listing-form");
 
-  // Show image preview when user selects a file
+  // Show thumbnails when user selects files
   document.getElementById("field-image")
     .addEventListener("change", (e) => {
-      const file = e.target.files[0];
-      const preview = document.getElementById("image-preview");
-      if (file) {
-        preview.src = URL.createObjectURL(file);
-        preview.style.display = "block";
-      } else {
-        preview.src = "";
-        preview.style.display = "none";
-      }
+      const files = Array.from(e.target.files);
+      const strip = document.getElementById("image-preview-strip");
+      strip.innerHTML = "";
+      if (files.length === 0) { strip.style.display = "none"; return; }
+      strip.style.display = "flex";
+      files.forEach(file => {
+        const img = document.createElement("img");
+        img.src = URL.createObjectURL(file);
+        img.style.cssText = "width:80px;height:80px;object-fit:cover;border-radius:6px;border:2px solid var(--color-border);";
+        strip.appendChild(img);
+      });
     });
 
   document.getElementById("submit-listing-btn").addEventListener("click", async () => {
@@ -214,7 +196,7 @@ function initAddListingForm(user) {
     const description = document.getElementById("field-description").value.trim();
     const price       = document.getElementById("field-price").value.trim();
     const category    = document.getElementById("field-category").value;
-    const imageFile   = document.getElementById("field-image").files[0];
+    const imageFiles = Array.from(document.getElementById("field-image").files);
     const errorDiv    = document.getElementById("form-error");
     const submitBtn   = document.getElementById("submit-listing-btn");
 
@@ -231,16 +213,15 @@ function initAddListingForm(user) {
     submitBtn.disabled = true;
 
     try {
-      let imageURL = "";
-      if (imageFile) {
-        console.log("Uploading image:", imageFile.name);
-        // Upload image to Firebase Storage under listings/{userUID}/{timestamp}_{filename}
-        const filename = `${Date.now()}_${imageFile.name}`;
-        const storageRef = ref(storage, `listings/${user.uid}/${filename}`);
-        const snapshot = await uploadBytes(storageRef, imageFile);
-        // Get the public download URL
-        imageURL = await getDownloadURL(snapshot.ref);
-        console.log("Image uploaded, URL:", imageURL);
+      let imageURLs = [];
+      if (imageFiles.length > 0) {
+        for (const file of imageFiles) {
+          const filename = `${Date.now()}_${file.name}`;
+          const storageRef = ref(storage, `listings/${user.uid}/${filename}`);
+          const snap = await uploadBytes(storageRef, file);
+          const url  = await getDownloadURL(snap.ref);
+          imageURLs.push(url);
+        }
       }
 
       console.log("Adding doc:", title, price, category);
@@ -250,7 +231,8 @@ function initAddListingForm(user) {
         description: description,
         price:       price,
         category:    category,
-        imageURL:    imageURL,
+        imageURLs:   imageURLs,
+        imageURL:    imageURLs[0] || "",
         sellerUID:   user.uid,
         sellerEmail: user.email,
         createdAt:   serverTimestamp()
@@ -285,8 +267,8 @@ function clearForm() {
   if (cat) cat.value = "";
   const imageInput = document.getElementById("field-image");
   if (imageInput) imageInput.value = "";
-  const preview = document.getElementById("image-preview");
-  if (preview) { preview.src = ""; preview.style.display = "none"; }
+  const strip = document.getElementById("image-preview-strip");
+  if (strip) { strip.innerHTML = ""; strip.style.display = "none"; }
   const errorDiv = document.getElementById("form-error");
   if (errorDiv) errorDiv.classList.remove("visible");
 }
