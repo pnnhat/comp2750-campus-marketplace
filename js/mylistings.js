@@ -54,76 +54,158 @@ async function loadMyListings(userUID) {
   snapshot.forEach(docSnap => renderRow(docSnap.id, docSnap.data(), userUID));
 }
 
-// Build and inject a table row for a single listing
+// Build and inject a card for a single listing
 function renderRow(id, data, userUID) {
-  const tbody = document.getElementById("listings-tbody");
-  const tr = document.createElement("tr");
-  tr.id = `row-${id}`;
-  const badgeClass = `badge-${(data.category || "").toLowerCase()}`;
+  const container = document.getElementById("listings-tbody");
+  const card = document.createElement("div");
+  card.className = "my-listing-card";
+  card.id = `row-${id}`;
+
   const status = data.status || "Active";
   const statusClass = {
     "Active":  "status-active",
     "Pending": "status-pending",
     "Sold":    "status-sold"
   }[status] || "status-active";
-  tr.innerHTML = `
-    <td>
-      <div class="table-item-title">${data.title}</div>
-      <div class="table-item-desc">${data.description}</div>
-    </td>
-    <td><span class="badge ${badgeClass}">${data.category || "\u2014"}</span></td>
-    <td class="table-price" id="price-cell-${id}">${data.price || "\u2014"}</td>
-    <td id="status-cell-${id}"><span class="${statusClass}">${status}</span></td>
-    <td class="action-btns">
-      <button class="btn-edit" id="edit-btn-${id}">Edit</button>
-      <button class="btn-delete" id="delete-btn-${id}">Delete</button>
-    </td>
+
+  const priceDisplay = data.price || "—";
+
+  // Get first image — handle both imageURLs array and single imageURL
+  const firstImage = (data.imageURLs && data.imageURLs.length > 0)
+    ? data.imageURLs[0]
+    : (data.imageURL || "");
+
+  card.innerHTML = `
+    <div class="my-listing-img-wrap">
+      ${firstImage
+        ? `<img src="${firstImage}" class="my-listing-img" alt="${data.title}"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+           <div class="my-listing-img-placeholder" style="display:none;"></div>`
+        : `<div class="my-listing-img-placeholder"></div>`}
+    </div>
+    <div class="my-listing-info">
+      <div class="my-listing-title">${data.title}</div>
+      <div class="my-listing-price" id="price-cell-${id}">${priceDisplay}</div>
+      <div class="my-listing-meta">Listed to Marketplace</div>
+      <div id="status-cell-${id}">
+        <span class="${statusClass}">${status}</span>
+      </div>
+    </div>
+    <div class="my-listing-actions">
+      <button class="my-listing-mark-sold btn-mark-sold" id="mark-sold-btn-${id}">
+        ${status === "Sold" ? "✓ Sold" : "✓ Mark as Sold"}
+      </button>
+      <div class="my-listing-dots-wrap">
+        <button class="my-listing-dots-btn" id="dots-btn-${id}">•••</button>
+        <div class="my-listing-dropdown" id="dropdown-${id}" style="display:none;">
+          <button class="dropdown-item" id="pending-btn-${id}">⏸ Mark as Pending</button>
+          <button class="dropdown-item" id="edit-btn-${id}">✎ Edit Listing</button>
+          <button class="dropdown-item dropdown-item-danger" id="delete-btn-${id}">🗑 Delete Listing</button>
+        </div>
+      </div>
+    </div>
   `;
-  tr.querySelector(`#delete-btn-${id}`)
-    .addEventListener("click", () => deleteListing(id, userUID));
-  tr.querySelector(`#edit-btn-${id}`)
-    .addEventListener("click", () => openEditRow(id, data, userUID));
-  tbody.appendChild(tr);
+
+  // Wire mark as sold button
+  card.querySelector(`#mark-sold-btn-${id}`)
+    .addEventListener("click", () => markAsSold(id, data, userUID));
+
+  // Wire dots button — toggle dropdown
+  card.querySelector(`#dots-btn-${id}`)
+    .addEventListener("click", (e) => {
+      e.stopPropagation();
+      document.querySelectorAll(".my-listing-dropdown").forEach(d => {
+        if (d.id !== `dropdown-${id}`) d.style.display = "none";
+      });
+      const dd = document.getElementById(`dropdown-${id}`);
+      dd.style.display = dd.style.display === "block" ? "none" : "block";
+    });
+
+  // Wire dropdown items
+  card.querySelector(`#pending-btn-${id}`)
+    .addEventListener("click", () => {
+      document.getElementById(`dropdown-${id}`).style.display = "none";
+      togglePending(id, data, userUID);
+    });
+
+  card.querySelector(`#edit-btn-${id}`)
+    .addEventListener("click", () => {
+      document.getElementById(`dropdown-${id}`).style.display = "none";
+      openEditModal(id, data, userUID);
+    });
+
+  card.querySelector(`#delete-btn-${id}`)
+    .addEventListener("click", () => {
+      document.getElementById(`dropdown-${id}`).style.display = "none";
+      deleteListing(id, userUID);
+    });
+
+  container.appendChild(card);
 }
 
-// Open inline edit mode for a listing row
-function openEditRow(id, data, userUID) {
-  const priceCell  = document.getElementById(`price-cell-${id}`);
-  const statusCell = document.getElementById(`status-cell-${id}`);
-  const editBtn    = document.getElementById(`edit-btn-${id}`);
-  if (!priceCell || !statusCell || !editBtn) return;
-  const currentPrice  = data.price  || "";
-  const currentStatus = data.status || "Active";
-  priceCell.innerHTML = `<input class="edit-input" id="edit-price-${id}" type="text" value="${currentPrice}" placeholder='$20 or Trade'>`;
-  statusCell.innerHTML = `
-    <select class="edit-select" id="edit-status-${id}">
-      <option value="Active"  ${currentStatus === "Active"  ? "selected" : ""}>Active</option>
-      <option value="Pending" ${currentStatus === "Pending" ? "selected" : ""}>Pending</option>
-      <option value="Sold"    ${currentStatus === "Sold"    ? "selected" : ""}>Sold</option>
-    </select>
-  `;
-  const newBtn = document.createElement("button");
-  newBtn.textContent = "Save";
-  newBtn.className = "btn-save";
-  newBtn.id = `edit-btn-${id}`;
-  newBtn.addEventListener("click", () => saveEdit(id, data, userUID));
-  editBtn.replaceWith(newBtn);
+// Close all dropdowns when clicking outside
+document.addEventListener("click", () => {
+  document.querySelectorAll(".my-listing-dropdown")
+    .forEach(d => d.style.display = "none");
+});
+
+// Mark listing as Sold
+async function markAsSold(id, data, userUID) {
+  try {
+    await updateDoc(doc(db, "listings", id), { status: "Sold" });
+    data.status = "Sold";
+    document.getElementById(`row-${id}`)?.remove();
+    renderRow(id, data, userUID);
+  } catch (err) {
+    console.error("Error marking as sold:", err);
+    alert("Failed to update. Please try again.");
+  }
 }
 
-// Save the edited price and status to Firestore
+// Toggle between Pending and Active
+async function togglePending(id, data, userUID) {
+  const newStatus = (data.status === "Pending") ? "Active" : "Pending";
+  try {
+    await updateDoc(doc(db, "listings", id), { status: newStatus });
+    data.status = newStatus;
+    document.getElementById(`row-${id}`)?.remove();
+    renderRow(id, data, userUID);
+  } catch (err) {
+    console.error("Error updating status:", err);
+    alert("Failed to update. Please try again.");
+  }
+}
+
+// Open inline edit for price
+function openEditModal(id, data, userUID) {
+  const priceCell = document.getElementById(`price-cell-${id}`);
+  if (!priceCell) return;
+  priceCell.innerHTML = `
+    <div style="display:flex;gap:6px;align-items:center;margin-top:4px;">
+      <input class="edit-input" id="edit-price-${id}"
+             type="text" value="${data.price || ""}"
+             placeholder="$20 or Trade"
+             style="width:100px;">
+      <button class="btn-save" id="save-btn-${id}">Save</button>
+    </div>
+  `;
+  document.getElementById(`save-btn-${id}`)
+    .addEventListener("click", () => saveEdit(id, data, userUID));
+}
+
+// Save the edited price to Firestore
 async function saveEdit(id, data, userUID) {
-  const priceInput  = document.getElementById(`edit-price-${id}`);
-  const statusInput = document.getElementById(`edit-status-${id}`);
-  if (!priceInput || !statusInput) return;
-  const newPrice  = priceInput.value.trim();
-  const newStatus = statusInput.value;
+  const priceInput = document.getElementById(`edit-price-${id}`);
+  if (!priceInput) return;
+  const newPrice = priceInput.value.trim();
   if (!newPrice) { alert("Price cannot be empty."); return; }
   try {
-    await updateDoc(doc(db, "listings", id), { price: newPrice, status: newStatus });
-    data.price  = newPrice;
-    data.status = newStatus;
-    const tr = document.getElementById(`row-${id}`);
-    if (tr) tr.remove();
+    await updateDoc(doc(db, "listings", id), {
+      price:  newPrice,
+      status: data.status || "Active"
+    });
+    data.price = newPrice;
+    document.getElementById(`row-${id}`)?.remove();
     renderRow(id, data, userUID);
   } catch (err) {
     console.error("Error saving edit:", err);
@@ -131,16 +213,15 @@ async function saveEdit(id, data, userUID) {
   }
 }
 
-// Delete a listing document from Firestore and remove its table row
+// Delete a listing document from Firestore and remove its card
 async function deleteListing(id, userUID) {
   await deleteDoc(doc(db, "listings", id));
 
-  // Remove the row from the DOM
   document.getElementById(`row-${id}`)?.remove();
 
-  // Show empty state if no rows remain in the table
-  const tbody = document.getElementById("listings-tbody");
-  if (!tbody.querySelector("tr")) {
+  // Show empty state if no cards remain
+  const container = document.getElementById("listings-tbody");
+  if (!container.querySelector(".my-listing-card")) {
     showEmptyState();
   }
 }
