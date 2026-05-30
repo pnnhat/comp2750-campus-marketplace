@@ -105,7 +105,9 @@ function renderRow(id, data, userUID) {
       <div class="my-listing-meta">Listed to Marketplace</div>
     </div>
     <div class="my-listing-actions">
-      <button class="my-listing-mark-sold" id="mark-sold-btn-${id}">
+      <button class="my-listing-mark-sold ${status === "Sold" ? "mark-sold-disabled" : ''}"
+              id="mark-sold-btn-${id}"
+              ${status === "Sold" ? "disabled" : ""}>
         ✓ ${status === "Sold" ? "Sold" : "Mark as Sold"}
       </button>
       <div class="my-listing-dots-wrap">
@@ -113,7 +115,7 @@ function renderRow(id, data, userUID) {
         <div class="my-listing-dropdown"
              id="dropdown-${id}" style="display:none;">
           <button class="dropdown-item" id="pending-btn-${id}">
-            ⏸ Mark as Pending
+            ${status === "Pending" ? "▶ Mark as Active" : "⏸ Mark as Pending"}
           </button>
           <button class="dropdown-item" id="edit-btn-${id}">
             ✎ Edit Listing

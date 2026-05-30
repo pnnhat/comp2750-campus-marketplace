@@ -104,7 +104,7 @@
         <div class="form-error" id="form-error"></div>
         <div class="form-actions">
           <button type="button" class="btn-cancel-text" id="cancel-listing-btn">Cancel</button>
-          <button type="button" class="btn-post" id="submit-listing-btn">Post listing →</button>
+          <button type="button" class="btn-post" id="submit-listing-btn">Post listing</button>
         </div>
       </form>
     </div>
@@ -117,15 +117,24 @@
 
   <!-- Empty state (hidden by default) -->
   <div class="empty-state" id="empty-state" style="display:none;">
-    <div class="empty-state-icon">📦</div>
+    <div class="empty-state-icon">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="1.5"
+           stroke-linecap="round" stroke-linejoin="round"
+           style="color: var(--color-text-muted);">
+        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
+    </div>
     <div class="empty-state-title">You haven't listed anything yet.</div>
     <div class="empty-state-sub">Click "+ Add new listing" to post your first item.</div>
   </div>
 
   <!-- Footer -->
   <footer class="site-footer">
-    <span>© 2026 Campus Marketplace</span>
-    <span>Built for COMP2750 · Macquarie University</span>
+    <span>Campus Marketplace</span>
+    <span>© Macquarie University</span>
   </footer>
 
   <!-- Edit listing modal -->
@@ -169,7 +178,7 @@
           <button type="button" class="btn-cancel-text"
                   id="edit-cancel-btn">Cancel</button>
           <button type="button" class="btn-post"
-                  id="edit-save-btn">Save changes →</button>
+                  id="edit-save-btn">Save changes</button>
         </div>
 
       </div>

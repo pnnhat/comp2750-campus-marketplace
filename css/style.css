@@ -107,7 +107,7 @@ img {
 
 /* ─── Navbar ─────────────────────────────────────────────────────────────── */
 .navbar {
-  height: 80px;
+  height: 110px;
   background: var(--color-bg-primary);
   border-bottom: 1px solid var(--color-border);
   padding: 0 28px;
@@ -137,7 +137,7 @@ img {
 
 .nav-brand-name {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 22px;
+  font-size: 30px;
   font-weight: 900;
   letter-spacing: -0.01em;
   color: var(--color-text-primary);
@@ -151,9 +151,9 @@ img {
 }
 
 .nav-pill {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 600;
-  padding: 10px 22px;
+  padding: 14px 30px;
   border-radius: 999px;
   color: var(--color-text-secondary);
   background: transparent;
@@ -179,12 +179,15 @@ img {
 }
 
 .nav-user-email {
-  font-size: 12px;
-  color: var(--color-text-muted);
-  max-width: 180px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  max-width: 200px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  padding-right: 10px;
+  border-right: 1px solid var(--color-border);
 }
 
 /* ─── Theme Toggle Button ────────────────────────────────────────────────── */
@@ -213,10 +216,10 @@ img {
   background: var(--color-dark-btn);
   color: #EDEBE5;
   border: none;
-  padding: 12px 24px;
+  padding: 16px 32px;
   border-radius: 999px;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
   transition: opacity 0.15s;
   white-space: nowrap;
@@ -248,9 +251,9 @@ img {
 /* ─── Category Badges ────────────────────────────────────────────────────── */
 .badge {
   display: inline-block;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
-  padding: 3px 9px;
+  padding: 4px 10px;
   border-radius: 999px;
 }
 
@@ -377,22 +380,24 @@ img {
 
 .login-left {
   flex: 1;
-  background: #A6192E;
-  padding: 60px 56px;
+  background: #B5001A;
+  padding: 48px 56px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 24px;
+  justify-content: space-between;
+  gap: 0;
 }
 
 .login-left-content {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
+  flex: 1;
+  justify-content: center;
 }
 
 .nav-mq-img {
-  height: 52px;
+  height: 70px;
   width: auto;
 }
 
@@ -402,27 +407,37 @@ img {
   display: block;
 }
 
+.login-mq-logo {
+  height: 32px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  opacity: 0.75;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
 .login-headline {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 72px;
+  font-size: 88px;
   font-weight: 900;
   color: white;
-  line-height: 1;
+  line-height: 0.95;
   letter-spacing: -0.02em;
-  margin: 0;
+  margin: 0 0 20px 0;
 }
 
 .login-subtext {
   font-size: 18px;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255,255,255,0.80);
   line-height: 1.5;
+  max-width: 340px;
 }
 
 .login-badge {
   display: inline-block;
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
-  font-size: 14px;
+  background: rgba(255,255,255,0.20);
+  color: white;
+  font-size: 13px;
   font-weight: 700;
   padding: 8px 18px;
   border-radius: 999px;
@@ -430,17 +445,18 @@ img {
 }
 
 .login-footer-text {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.5);
+  font-size: 13px;
+  color: rgba(255,255,255,0.70);
 }
 
 .login-right {
-  flex: 1.2;
-  background: var(--color-bg-primary);
-  padding: 48px 60px;
+  flex: 1.1;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
+  background: var(--color-bg-primary);
+  padding: 60px 40px;
   position: relative;
 }
 
@@ -449,8 +465,8 @@ img {
 }
 
 .login-right-inner {
-  max-width: 360px;
   width: 100%;
+  max-width: 440px;
 }
 
 .login-theme-toggle {
@@ -459,37 +475,50 @@ img {
   right: 24px;
 }
 
+.login-right-inner .form-input {
+  padding: 14px 16px;
+  font-size: 15px;
+  border-radius: 10px;
+}
+
+.login-right-inner .form-label {
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
 .login-title {
-  font-size: 26px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 48px;
   font-weight: 900;
+  margin-bottom: 8px;
   color: var(--color-text-primary);
-  margin-bottom: 6px;
 }
 
 .login-hint {
-  font-size: 13px;
+  font-size: 16px;
   color: var(--color-text-secondary);
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 
 .btn-login {
   width: 100%;
-  background: #D6001C;
-  color: #ffffff;
-  border: none;
-  border-radius: 6px;
-  padding: 14px 32px;
-  font-size: 15px;
+  padding: 18px;
+  font-size: 16px;
   font-weight: 700;
-  font-family: inherit;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  background: var(--color-accent);
+  color: white;
+  border: none;
+  border-radius: 10px;
   cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-top: 8px;
   transition: background 0.15s;
 }
 
 .btn-login:hover {
-  background: #A6192E;
+  background: var(--color-accent-hover);
 }
 
 /* ─── INDEX (Welcome) PAGE ───────────────────────────────────────────────── */
@@ -647,9 +676,9 @@ img {
 /* ─── MARKETPLACE & SHORTLIST — Items Grid ───────────────────────────────── */
 .items-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  padding: 0 28px 28px;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+  padding: 20px 60px 60px;
 }
 
 .item-card {
@@ -692,13 +721,13 @@ img {
 }
 
 .item-card-name {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   margin: 8px 0 4px;
 }
 
 .item-card-desc {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--color-text-secondary);
   white-space: nowrap;
   overflow: hidden;
@@ -707,20 +736,25 @@ img {
 }
 
 .item-card-price {
-  font-size: 24px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 28px;
   font-weight: 900;
   color: var(--color-accent);
-  margin: 6px 0;
+  margin: 4px 0;
 }
 
 .item-card-price.trade {
-  color: var(--color-badge-furniture-text);
+  color: var(--color-accent);
 }
 
 .item-card-seller {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--color-text-muted);
   margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 /* ─── Shortlist Button ───────────────────────────────────────────────────── */
@@ -831,28 +865,32 @@ img {
 }
 
 .btn-cancel-text {
-  background: none;
-  border: none;
-  font-size: 13px;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
   color: var(--color-text-secondary);
   cursor: pointer;
   font-family: inherit;
-  padding: 9px 4px;
 }
 
 .btn-cancel-text:hover {
+  background: var(--color-bg-secondary);
   color: var(--color-text-primary);
 }
 
 /* ─── My Listings Card Grid ───────────────────────────────────────────── */
 .my-listings-container {
   padding: 0 60px 60px;
-  max-width: 900px;
+  width: 100%;
+  max-width: 100%;
 }
 
 .my-listings-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 20px;
 }
 
@@ -942,6 +980,21 @@ img {
   color: #009174;
 }
 
+.my-listing-mark-sold.mark-sold-disabled {
+  opacity: 1;
+  cursor: not-allowed;
+  pointer-events: none;
+  border-color: #cccccc;
+  color: #999999;
+  background: #f0f0f0;
+}
+
+[data-theme="dark"] .my-listing-mark-sold.mark-sold-disabled {
+  border-color: #444444;
+  color: #666666;
+  background: #2a2a2a;
+}
+
 .my-listing-dots-wrap {
   position: relative;
 }
@@ -968,7 +1021,7 @@ img {
 
 .my-listing-dropdown {
   position: absolute;
-  top: calc(100% + 6px);
+  bottom: calc(100% + 6px);
   right: 0;
   background: var(--color-bg-primary);
   border: 1px solid var(--color-border);
@@ -1036,9 +1089,11 @@ img {
 }
 
 .empty-state-icon {
-  font-size: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 16px;
-  line-height: 1;
+  color: var(--color-text-muted);
 }
 
 .empty-state-title {
@@ -1386,7 +1441,7 @@ img {
 }
 
 .modal-price.trade {
-  color: #009174;
+  color: var(--color-accent);
 }
 
 .modal-seller {
@@ -1599,4 +1654,33 @@ img {
   .my-listings-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ─── Password Toggle ────────────────────────────────────────────────────── */
+.password-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrap .form-input {
+  padding-right: 44px;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+}
+
+.password-toggle-btn:hover {
+  color: var(--color-text-primary);
 }

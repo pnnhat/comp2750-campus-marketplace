@@ -52,21 +52,59 @@
 
   <!-- Empty state (hidden by default) -->
   <div class="empty-state shortlist-empty" id="empty-state" style="display:none;">
-    <div class="empty-state-icon">♡</div>
+    <div class="empty-state-icon">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="1.5"
+           stroke-linecap="round" stroke-linejoin="round"
+           style="color: var(--color-text-muted);">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06
+                 a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78
+                 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+    </div>
     <div class="empty-state-title">Your shortlist is empty.</div>
     <div class="empty-state-sub">Browse the marketplace and shortlist items you are interested in.</div>
-    <a href="marketplace.html" class="empty-state-btn">Browse Marketplace →</a>
+    <a href="marketplace.html" class="empty-state-btn">Browse Marketplace</a>
   </div>
 
   <!-- Footer -->
   <footer class="site-footer">
-    <span>© 2026 Campus Marketplace</span>
-    <span>Built for COMP2750 · Macquarie University</span>
+    <span>Campus Marketplace</span>
+    <span>© Macquarie University</span>
   </footer>
 
   <script type="module" src="js/theme.js"></script>
   <script type="module" src="js/shortlist.js"></script>
 
+  <div class="modal-overlay" id="item-modal" style="display:none;">
+    <div class="modal-fullscreen">
+      <button class="modal-close-btn" id="modal-close">✕</button>
+      <div class="modal-gallery">
+        <div class="modal-gallery-main">
+          <img class="modal-main-img" id="modal-main-img" src="" alt="">
+          <div class="modal-img-placeholder" id="modal-img-placeholder"
+               style="display:none;"></div>
+          <button class="modal-arrow modal-arrow-left"
+                  id="modal-prev" style="display:none;">&#8249;</button>
+          <button class="modal-arrow modal-arrow-right"
+                  id="modal-next" style="display:none;">&#8250;</button>
+        </div>
+        <div class="modal-thumbnails" id="modal-thumbnails"></div>
+      </div>
+      <div class="modal-details">
+        <span class="badge modal-badge" id="modal-badge"></span>
+        <h2 class="modal-title" id="modal-title"></h2>
+        <div class="modal-price" id="modal-price"></div>
+        <div class="modal-seller" id="modal-seller"></div>
+        <div class="modal-divider"></div>
+        <p class="modal-desc-label">Description</p>
+        <p class="modal-desc" id="modal-desc"></p>
+        <div class="modal-divider"></div>
+        <button class="shortlist-btn shortlisted modal-shortlist-btn"
+                id="modal-remove-btn" disabled>♥ Shortlisted</button>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>

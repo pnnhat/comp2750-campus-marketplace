@@ -245,9 +245,14 @@ async function addToShortlist(userUID, listingId, data) {
   const existing = await getDoc(ref);
   if (existing.exists()) return;
   await setDoc(ref, {
-    title: data.title, description: data.description, price: data.price,
-    category: data.category, imageURL: data.imageURL || "",
-    sellerEmail: data.sellerEmail, addedAt: serverTimestamp()
+    title:       data.title,
+    description: data.description,
+    price:       data.price,
+    category:    data.category,
+    imageURL:    data.imageURL  || "",
+    imageURLs:   data.imageURLs || (data.imageURL ? [data.imageURL] : []),
+    sellerEmail: data.sellerEmail,
+    addedAt:     serverTimestamp()
   });
   const btn = document.getElementById(`shortlist-btn-${listingId}`);
   if (btn) { btn.textContent = "♥ Shortlisted"; btn.classList.add("shortlisted"); btn.disabled = true; }

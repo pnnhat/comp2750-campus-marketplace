@@ -4,8 +4,11 @@
 import { requireAuth, handleSignOut } from "./auth-guard.js";
 import { db } from "./firebase-config.js";
 import {
-  collection, getDocs, deleteDoc, doc
+  collection, getDocs, deleteDoc, doc, getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+let modalImages = [];
+let modalCurrentIndex = 0;
 
 // Require authentication before showing the page
 requireAuth(async (user) => {
@@ -18,6 +21,18 @@ requireAuth(async (user) => {
 
   // Load the user's shortlisted items from Firestore
   await loadShortlist(user.uid);
+
+  document.getElementById("modal-close")
+    .addEventListener("click", closeModal);
+  document.getElementById("item-modal")
+    .addEventListener("click", (e) => {
+      if (e.target === document.getElementById("item-modal")) {
+        closeModal();
+      }
+    });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+  });
 });
 
 // Query and render all items in the user's shortlist
@@ -25,18 +40,39 @@ async function loadShortlist(userUID) {
   const grid = document.getElementById("shortlist-grid");
   grid.innerHTML = "";
 
-  // Get all docs from the user's shortlist subcollection
-  const snapshot = await getDocs(collection(db, "shortlists", userUID, "items"));
+  // Get all shortlisted item IDs for this user
+  const snapshot = await getDocs(
+    collection(db, "shortlists", userUID, "items")
+  );
 
   if (snapshot.empty) {
     showEmptyState();
     return;
   }
 
-  // Hide empty state and render cards
-  document.getElementById("empty-state").style.display = "none";
   grid.style.display = "";
-  snapshot.forEach(docSnap => renderCard(docSnap.id, docSnap.data(), userUID));
+  document.getElementById("empty-state").style.display = "none";
+
+  // For each shortlisted item, fetch the live listing from Firestore
+  for (const docSnap of snapshot.docs) {
+    const listingId = docSnap.id;
+    try {
+      // Get live data from listings collection
+      const listingDoc = await getDoc(
+        doc(db, "listings", listingId)
+      );
+      if (listingDoc.exists()) {
+        // Use live listing data so status/price are always current
+        renderCard(listingId, listingDoc.data(), userUID);
+      } else {
+        // Listing was deleted — use saved snapshot data
+        renderCard(listingId, docSnap.data(), userUID);
+      }
+    } catch (err) {
+      // Fall back to saved snapshot if live fetch fails
+      renderCard(listingId, docSnap.data(), userUID);
+    }
+  }
 }
 
 // Build and inject a card for a shortlisted item
@@ -63,6 +99,9 @@ function renderCard(id, data, userUID) {
       <div class="item-card-desc">${data.description}</div>
       ${priceHTML}
       <div class="item-card-seller">${data.sellerEmail}</div>
+      ${data.status && data.status !== "Active"
+        ? `<span class="status-${(data.status).toLowerCase()}">${data.status}</span>`
+        : ""}
       <button class="remove-btn" id="remove-btn-${id}">Remove</button>
     </div>
   `;
@@ -70,6 +109,12 @@ function renderCard(id, data, userUID) {
   // Wire up remove button for this card
   card.querySelector(`#remove-btn-${id}`).addEventListener("click", () => {
     removeFromShortlist(userUID, id);
+  });
+
+  card.style.cursor = "pointer";
+  card.addEventListener("click", (e) => {
+    if (e.target.closest(".remove-btn")) return;
+    openModal(id, data, userUID);
   });
 
   grid.appendChild(card);
@@ -94,3 +139,100 @@ function showEmptyState() {
   document.getElementById("shortlist-grid").style.display = "none";
   document.getElementById("empty-state").style.display = "";
 }
+
+function openModal(id, data, userUID) {
+  if (data.imageURLs && data.imageURLs.length > 0) {
+    modalImages = data.imageURLs;
+  } else if (data.imageURL) {
+    modalImages = [data.imageURL];
+  } else {
+    modalImages = [];
+  }
+  modalCurrentIndex = 0;
+
+  const badgeClass = `badge-${(data.category || "").toLowerCase()}`;
+  document.getElementById("modal-badge").className =
+    `badge modal-badge ${badgeClass}`;
+  document.getElementById("modal-badge").textContent  = data.category;
+  document.getElementById("modal-title").textContent  = data.title;
+  document.getElementById("modal-desc").textContent   = data.description;
+  document.getElementById("modal-seller").textContent =
+    "Listed by " + data.sellerEmail;
+
+  const priceEl = document.getElementById("modal-price");
+  if (data.price === "Trade") {
+    priceEl.textContent = "Trade";
+    priceEl.className   = "modal-price trade";
+  } else {
+    priceEl.textContent = data.price.startsWith("$")
+      ? data.price : "$" + data.price;
+    priceEl.className = "modal-price";
+  }
+
+  const mainImg     = document.getElementById("modal-main-img");
+  const placeholder = document.getElementById("modal-img-placeholder");
+  if (modalImages.length > 0) {
+    mainImg.src           = modalImages[0];
+    mainImg.style.display = "block";
+    placeholder.style.display = "none";
+  } else {
+    mainImg.style.display     = "none";
+    placeholder.style.display = "flex";
+  }
+
+  const showArrows = modalImages.length > 1;
+  document.getElementById("modal-prev").style.display =
+    showArrows ? "flex" : "none";
+  document.getElementById("modal-next").style.display =
+    showArrows ? "flex" : "none";
+
+  document.getElementById("modal-prev").onclick = () => {
+    modalCurrentIndex =
+      (modalCurrentIndex - 1 + modalImages.length) % modalImages.length;
+    showModalImage(modalCurrentIndex);
+  };
+  document.getElementById("modal-next").onclick = () => {
+    modalCurrentIndex = (modalCurrentIndex + 1) % modalImages.length;
+    showModalImage(modalCurrentIndex);
+  };
+
+  buildThumbnails();
+
+  document.getElementById("item-modal").style.display = "flex";
+  document.body.style.overflow = "hidden";
+}
+
+function showModalImage(index) {
+  if (modalImages.length === 0) return;
+  modalCurrentIndex = (index + modalImages.length) % modalImages.length;
+  const mainImg = document.getElementById("modal-main-img");
+  mainImg.src = modalImages[modalCurrentIndex];
+  document.querySelectorAll(".modal-thumb").forEach((t, i) => {
+    t.classList.toggle("active", i === modalCurrentIndex);
+  });
+}
+
+function buildThumbnails() {
+  const strip = document.getElementById("modal-thumbnails");
+  strip.innerHTML = "";
+  if (modalImages.length <= 1) {
+    strip.style.display = "none";
+    return;
+  }
+  strip.style.display = "flex";
+  modalImages.forEach((url, i) => {
+    const img = document.createElement("img");
+    img.src = url;
+    img.className = `modal-thumb${i === 0 ? " active" : ""}`;
+    img.addEventListener("click", () => showModalImage(i));
+    strip.appendChild(img);
+  });
+}
+
+function closeModal() {
+  document.getElementById("item-modal").style.display = "none";
+  document.body.style.overflow = "";
+  modalImages = [];
+  modalCurrentIndex = 0;
+}
+
