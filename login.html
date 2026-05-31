@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Apply saved theme before page renders to prevent flash -->
   <script>
     (function () {
       var saved = localStorage.getItem('mq-theme') || 'system';
@@ -19,7 +18,7 @@
 
   <div class="login-page">
 
-    <!-- Left panel: branding and app description -->
+    <!-- Left panel -->
     <div class="login-left">
       <div class="login-left-content">
         <div>
@@ -31,7 +30,7 @@
       <span class="login-footer-text">© 2026 Macquarie University</span>
     </div>
 
-    <!-- Right panel: sign in form -->
+    <!-- Right panel -->
     <div class="login-right">
       <div class="login-right-inner">
         <h2 class="login-title">Sign in</h2>
@@ -70,18 +69,16 @@
   </div>
 
   <script type="module" src="js/theme.js"></script>
-  <!-- Firebase Authentication: handles sign in and redirects -->
   <script type="module">
     // Firebase Auth — sign in
     import { auth } from "./js/firebase-config.js";
     import { signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-    // If user is already signed in, skip login and go to home
+    // If user is already signed in, redirect to home page immediately
     onAuthStateChanged(auth, (user) => {
       if (user) window.location.href = "index.html";
     });
 
-    // Handle sign in form submission
     document.getElementById("login-form").addEventListener("submit", async (e) => {
       e.preventDefault();
       const email    = document.getElementById("email-input").value.trim();
@@ -106,7 +103,7 @@
       }
     });
 
-    // Toggle password field between visible and hidden
+    // Toggle password visibility
     const passwordInput = document.getElementById("password-input");
     const passwordToggle = document.getElementById("password-toggle");
 
