@@ -3,6 +3,7 @@
 <head>
   <!-- Apply saved theme before page renders to prevent flash -->
   <script>
+    (function () {
       var saved = localStorage.getItem('mq-theme') || 'system';
       var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       var isDark = saved === 'dark' || (saved === 'system' && prefersDark);
