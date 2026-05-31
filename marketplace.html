@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Apply saved theme before page renders to prevent flash -->
   <script>
-    (function () {
       var saved = localStorage.getItem('mq-theme') || 'system';
       var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       var isDark = saved === 'dark' || (saved === 'system' && prefersDark);
@@ -16,7 +16,7 @@
 </head>
 <body>
 
-  <!-- Navbar -->
+  <!-- Navbar: logo, navigation links, user email, theme toggle, sign out -->
   <nav class="navbar">
     <a href="index.html" class="nav-brand">
       <img src="assets/Macquarie_University.png" alt="Macquarie University" class="nav-mq-img">
@@ -39,13 +39,13 @@
     </div>
   </nav>
 
-  <!-- Page header -->
+  <!-- Page header: title and subtitle -->
   <div class="page-header">
     <h1>Marketplace</h1>
     <p>Browse items listed by other students</p>
   </div>
 
-  <!-- Filter chips -->
+  <!-- Category filter chips: clicking filters the listings grid by category -->
   <div class="filter-bar">
     <button class="filter-chip filter-btn active" data-category="all">All</button>
     <button class="filter-chip filter-btn" data-category="Textbooks">Textbooks</button>
@@ -56,7 +56,7 @@
     <button class="filter-chip filter-btn" data-category="Fitness">Fitness</button>
   </div>
 
-  <!-- Items grid -->
+  <!-- Listings grid: populated dynamically by marketplace.js from Firestore -->
   <div class="items-grid" id="listings-grid">
   </div>
 
@@ -69,14 +69,14 @@
   <script type="module" src="js/theme.js"></script>
   <script type="module" src="js/marketplace.js"></script>
 
-  <!-- Item detail modal -->
+  <!-- Full-screen item detail modal: shown when a listing card is clicked -->
   <div class="modal-overlay" id="item-modal" style="display:none;">
     <div class="modal-fullscreen">
 
       <!-- Close button top left -->
       <button class="modal-close-btn" id="modal-close">✕</button>
 
-      <!-- Left: image gallery -->
+      <!-- Left side: image gallery with prev/next arrows and thumbnail strip -->
       <div class="modal-gallery">
         <div class="modal-gallery-main">
           <img class="modal-main-img" id="modal-main-img" src="" alt="">
@@ -90,7 +90,7 @@
         <div class="modal-thumbnails" id="modal-thumbnails"></div>
       </div>
 
-      <!-- Right: item details -->
+      <!-- Right side: item details including title, price, description, shortlist button -->
       <div class="modal-details">
         <span class="badge modal-badge" id="modal-badge"></span>
         <h2 class="modal-title" id="modal-title"></h2>

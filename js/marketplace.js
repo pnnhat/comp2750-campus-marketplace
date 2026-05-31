@@ -1,5 +1,8 @@
-// js/marketplace.js
-// Loads marketplace listings from Firestore and handles shortlisting.
+// marketplace.js
+// Controls the marketplace page (marketplace.html).
+// Loads all listings from Firestore excluding the signed-in user's own items,
+// renders item cards with shortlist buttons, handles category filtering,
+// and opens a full-screen detail modal with image gallery when a card is clicked.
 
 import { requireAuth, handleSignOut } from "./auth-guard.js";
 import { db } from "./firebase-config.js";
@@ -8,7 +11,7 @@ import {
   doc, getDoc, setDoc, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// Module-level state for the open modal
+// Track the currently open modal's listing ID, data, image array and index.
 let currentModalId = null;
 let currentModalData = null;
 let modalImages = [];
@@ -47,7 +50,8 @@ requireAuth(async (user) => {
   });
 });
 
-// Query listings where the seller is not the current user
+// Query Firestore for all listings where the sellerUID is not the current user.
+// This ensures users only see other people's items, never their own.
 async function loadMarketplaceItems(user) {
   const grid = document.getElementById("listings-grid");
   const q = query(
@@ -65,6 +69,10 @@ async function loadMarketplaceItems(user) {
   }
 }
 
+// Build and inject a listing card into the marketplace grid.
+// Checks Firestore to see if this item is already in the user's shortlist
+// so the button can show the correct initial state.
+// Clicking the card (outside the Shortlist button) opens the detail modal.
 async function renderCard(id, data, userUID) {
   const grid = document.getElementById("listings-grid");
   const isShortlisted = await checkIfShortlisted(userUID, id);
@@ -109,12 +117,19 @@ async function renderCard(id, data, userUID) {
   grid.appendChild(card);
 }
 
+// Check if a specific listing is already in the user's shortlist.
+// Reads from shortlists/{userUID}/items/{listingId}.
+// Returns true if the document exists, false if not.
 async function checkIfShortlisted(userUID, listingId) {
   const ref = doc(db, "shortlists", userUID, "items", listingId);
   const snap = await getDoc(ref);
   return snap.exists();
 }
 
+// Open the full-screen detail modal for a listing.
+// Builds the image gallery supporting both imageURLs array (new listings)
+// and single imageURL string (older seeded listings) for backwards compatibility.
+// Also checks shortlist status to show the correct button state in the modal.
 function openModal(id, data, userUID) {
   currentModalId   = id;
   currentModalData = data;
@@ -208,6 +223,7 @@ function openModal(id, data, userUID) {
   document.body.style.overflow = "hidden";
 }
 
+// Close the modal and restore normal page scrolling.
 function closeModal() {
   document.getElementById("item-modal").style.display = "none";
   document.body.style.overflow = "";
@@ -215,6 +231,9 @@ function closeModal() {
   modalCurrentIndex = 0;
 }
 
+// Navigate to a specific image in the modal gallery by index.
+// Wraps around at the start and end of the images array.
+// Updates the active state on the thumbnail strip.
 function showModalImage(index) {
   if (modalImages.length === 0) return;
   modalCurrentIndex = (index + modalImages.length) % modalImages.length;
@@ -226,6 +245,8 @@ function showModalImage(index) {
   });
 }
 
+// Build the scrollable thumbnail strip below the main modal image.
+// Only rendered when the listing has 2 or more images.
 function buildThumbnails() {
   const strip = document.getElementById("modal-thumbnails");
   strip.innerHTML = "";
@@ -240,6 +261,11 @@ function buildThumbnails() {
   });
 }
 
+// Save a listing to the user's shortlist in Firestore.
+// Stores a copy of the listing data at shortlists/{userUID}/items/{listingId}.
+// Also saves imageURLs array so the shortlist modal can show multiple images.
+// Checks for duplicates before writing to prevent double-shortlisting.
+// Updates the shortlist button on the card and in the modal immediately.
 async function addToShortlist(userUID, listingId, data) {
   const ref = doc(db, "shortlists", userUID, "items", listingId);
   const existing = await getDoc(ref);
@@ -258,6 +284,9 @@ async function addToShortlist(userUID, listingId, data) {
   if (btn) { btn.textContent = "♥ Shortlisted"; btn.classList.add("shortlisted"); btn.disabled = true; }
 }
 
+// Wire up the category filter chip buttons.
+// Clicking a chip filters the visible cards by matching data-category attribute.
+// "All" shows every card regardless of category.
 function initFilterChips() {
   const filterBtns = document.querySelectorAll(".filter-btn");
   filterBtns.forEach(btn => {

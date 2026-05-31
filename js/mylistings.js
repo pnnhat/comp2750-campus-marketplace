@@ -1,5 +1,11 @@
-// js/mylistings.js
-// Manages the current user's listings — load, add, and delete.
+// mylistings.js
+// Controls the My Listings page (mylistings.html).
+// Loads the signed-in user's own listings from Firestore and renders
+// them as a card grid. Each card has a Mark as Sold button and a
+// three-dot dropdown for Mark as Pending, Edit Listing, and Delete.
+// The Edit Listing modal allows changing price, status, and images.
+// New listings can be added via a collapsible form with image upload
+// to Firebase Storage.
 
 import { requireAuth, handleSignOut } from "./auth-guard.js";
 import { db, storage } from "./firebase-config.js";
@@ -44,7 +50,8 @@ requireAuth(async (user) => {
     });
 });
 
-// Query and render the current user's listings
+// Query Firestore for all listings where sellerUID matches the current user.
+// Renders each result as a card and shows the empty state if none exist.
 async function loadMyListings(userUID) {
   // Fetch only listings belonging to the current user
   const q = query(
@@ -70,7 +77,9 @@ async function loadMyListings(userUID) {
   snapshot.forEach(docSnap => renderRow(docSnap.id, docSnap.data(), userUID));
 }
 
-// Build and inject a grid card for a single listing
+// Build and inject a listing card for one of the user's own items.
+// Shows the first image, title, price, status, and action buttons.
+// The three-dot button opens a dropdown with Pending, Edit, and Delete options.
 function renderRow(id, data, userUID) {
   const container = document.getElementById("listings-tbody");
   const card = document.createElement("div");
@@ -171,7 +180,8 @@ document.addEventListener("click", () => {
     .forEach(d => d.style.display = "none");
 });
 
-// Mark listing as Sold
+// Update the listing status to "Sold" in Firestore.
+// Re-renders the card so the Mark as Sold button becomes disabled and grey.
 async function markAsSold(id, data, userUID) {
   try {
     await updateDoc(doc(db, "listings", id), { status: "Sold" });
@@ -184,7 +194,8 @@ async function markAsSold(id, data, userUID) {
   }
 }
 
-// Toggle between Pending and Active
+// Toggle the listing status between "Active" and "Pending" in Firestore.
+// Re-renders the card to reflect the new status immediately.
 async function togglePending(id, data, userUID) {
   const newStatus = (data.status === "Pending") ? "Active" : "Pending";
   try {
@@ -204,6 +215,10 @@ let editingData = null;
 let editingUID  = null;
 let imagesToDelete = [];
 
+// Open the Edit Listing modal pre-filled with the current listing data.
+// Shows existing images as thumbnails with individual delete buttons.
+// Allows uploading additional images via Firebase Storage.
+// Tracks which images the user wants to remove before saving.
 function openEditModal(id, data, userUID) {
   editingId   = id;
   editingData = data;
@@ -271,7 +286,11 @@ function openEditModal(id, data, userUID) {
   document.body.style.overflow = "hidden";
 }
 
-// Save edits (price, status, images) to Firestore
+// Save changes from the Edit Listing modal to Firestore.
+// Removes images the user marked for deletion from the imageURLs array.
+// Uploads any new image files to Firebase Storage and appends their URLs.
+// Updates the Firestore document with new price, status, and image arrays.
+// Re-renders the card with the updated data on success.
 async function saveEdit(id, data, userUID) {
   const newPrice  = document.getElementById("edit-price-input").value.trim();
   const newStatus = document.getElementById("edit-status-input").value;
@@ -328,6 +347,7 @@ async function saveEdit(id, data, userUID) {
   }
 }
 
+// Close the Edit Listing modal and reset all tracking variables.
 function closeEditModal() {
   document.getElementById("edit-modal").style.display = "none";
   document.body.style.overflow = "";
@@ -337,7 +357,8 @@ function closeEditModal() {
   imagesToDelete = [];
 }
 
-// Delete a listing document from Firestore and remove its card
+// Permanently delete a listing document from Firestore.
+// Removes the card from the DOM and shows the empty state if no cards remain.
 async function deleteListing(id, userUID) {
   await deleteDoc(doc(db, "listings", id));
 
@@ -350,13 +371,15 @@ async function deleteListing(id, userUID) {
   }
 }
 
+// Hide the listings grid and show the empty state message.
 function showEmptyState() {
   document.getElementById("empty-state").style.display = "";
   const tableContainer = document.getElementById("table-container");
   if (tableContainer) tableContainer.style.display = "none";
 }
 
-// Toggle the add-listing panel open/closed
+// Wire the Add New Listing toggle button to show and hide the form panel.
+// The Cancel button also hides the form and resets all fields.
 function initAddListingToggle() {
   const toggleBtn = document.getElementById("add-listing-toggle");
   const panel     = document.getElementById("add-listing-form");
@@ -371,7 +394,10 @@ function initAddListingToggle() {
   });
 }
 
-// Handle add-listing form submission
+// Wire the Post Listing button to validate fields and submit to Firestore.
+// If images are selected, uploads them to Firebase Storage first
+// and collects their download URLs before writing the Firestore document.
+// Stores both imageURLs array and imageURL (first image) for compatibility.
 function initAddListingForm(user) {
   const listingForm = document.getElementById("listing-form");
   if (!listingForm) return;
@@ -463,6 +489,8 @@ function initAddListingForm(user) {
   });
 }
 
+// Reset all fields in the Add New Listing form back to empty.
+// Also clears the image preview thumbnails.
 function clearForm() {
   ["field-title", "field-description", "field-price"].forEach(id => {
     const el = document.getElementById(id);

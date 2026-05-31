@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Apply saved theme before page renders to prevent flash -->
   <script>
-    (function () {
       var saved = localStorage.getItem('mq-theme') || 'system';
       var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       var isDark = saved === 'dark' || (saved === 'system' && prefersDark);
@@ -16,7 +16,7 @@
 </head>
 <body>
 
-  <!-- Navbar -->
+  <!-- Navbar: logo, navigation links, user email, theme toggle, sign out -->
   <nav class="navbar">
     <a href="index.html" class="nav-brand">
       <img src="assets/Macquarie_University.png" alt="Macquarie University" class="nav-mq-img">
@@ -39,13 +39,13 @@
     </div>
   </nav>
 
-  <!-- Hero -->
+  <!-- Hero: personalised welcome greeting injected by index.js -->
   <section class="hero-section">
     <h1 class="hero-heading" id="user-greeting"></h1>
     <p class="hero-sub">What would you like to do today?</p>
   </section>
 
-  <!-- Navigation cards -->
+  <!-- Navigation cards: links to Marketplace, My Listings, and Shortlist -->
   <div class="nav-cards-grid">
 
     <a href="marketplace.html" class="nav-card">

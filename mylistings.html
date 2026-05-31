@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Apply saved theme before page renders to prevent flash -->
   <script>
-    (function () {
       var saved = localStorage.getItem('mq-theme') || 'system';
       var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       var isDark = saved === 'dark' || (saved === 'system' && prefersDark);
@@ -16,7 +16,7 @@
 </head>
 <body>
 
-  <!-- Navbar -->
+  <!-- Navbar: logo, navigation links, user email, theme toggle, sign out -->
   <nav class="navbar">
     <a href="index.html" class="nav-brand">
       <img src="assets/Macquarie_University.png" alt="Macquarie University" class="nav-mq-img">
@@ -39,13 +39,13 @@
     </div>
   </nav>
 
-  <!-- Page header -->
+  <!-- Page header: title and subtitle -->
   <div class="page-header">
     <h1>My Listings</h1>
     <p>Items you have listed for sale or trade</p>
   </div>
 
-  <!-- Add listing button -->
+  <!-- Toggle button: shows or hides the Add New Listing form panel -->
   <button class="add-listing-btn" id="add-listing-toggle">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
          stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
@@ -55,7 +55,7 @@
     Add new listing
   </button>
 
-  <!-- Collapsible add listing form -->
+  <!-- Add New Listing form: hidden by default, toggled by the button above -->
   <div class="add-listing-panel" id="add-listing-form" style="display:none;">
     <div class="add-listing-form-inner">
       <h2>New listing</h2>
@@ -110,12 +110,12 @@
     </div>
   </div>
 
-  <!-- Listings card grid -->
+  <!-- Listings grid: populated dynamically by mylistings.js from Firestore -->
   <div class="my-listings-container" id="table-container">
     <div class="my-listings-grid" id="listings-tbody"></div>
   </div>
 
-  <!-- Empty state (hidden by default) -->
+  <!-- Empty state: shown when the user has no listings -->
   <div class="empty-state" id="empty-state" style="display:none;">
     <div class="empty-state-icon">
       <svg width="48" height="48" viewBox="0 0 24 24" fill="none"
@@ -137,7 +137,7 @@
     <span>© Macquarie University</span>
   </footer>
 
-  <!-- Edit listing modal -->
+  <!-- Edit Listing modal: allows user to update price, status, and images -->
   <div class="edit-modal-overlay" id="edit-modal" style="display:none;">
     <div class="edit-modal-container">
       <div class="edit-modal-header">
@@ -146,11 +146,11 @@
       </div>
       <div class="edit-modal-body">
 
-        <!-- Current images -->
+        <!-- Current images: shows existing images with individual delete buttons -->
         <div class="edit-section-label">Current Images</div>
         <div class="edit-current-images" id="edit-current-images"></div>
 
-        <!-- Add more images -->
+        <!-- Add more images: file picker for uploading additional images -->
         <div class="edit-section-label" style="margin-top:16px;">Add More Images</div>
         <input type="file" id="edit-new-images"
                accept="image/*" multiple

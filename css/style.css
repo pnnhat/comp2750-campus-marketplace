@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap');
 
-/* ─── Font stack: system sans-serif ─────────────────────────────────────── */
+/* Font stack: system sans-serif */
 
-/* ─── CSS Variables — Light Mode ─────────────────────────────────────────── */
+/* CSS Variables - Light Mode */
 :root {
   --color-bg-primary:             #ffffff;
   --color-bg-secondary:           #EDEBE5;
@@ -33,7 +33,7 @@
   --color-shadow:                 rgba(55,58,54,0.08);
 }
 
-/* ─── CSS Variables — Dark Mode ──────────────────────────────────────────── */
+/* CSS Variables - Dark Mode */
 [data-theme="dark"] {
   --color-bg-primary:             #1e1e1c;
   --color-bg-secondary:           #2a2a28;
@@ -63,14 +63,14 @@
   --color-shadow:                 rgba(0,0,0,0.3);
 }
 
-/* ─── Reset ──────────────────────────────────────────────────────────────── */
+/* Reset */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* ─── Base ───────────────────────────────────────────────────────────────── */
+/* Base */
 html {
   font-size: 16px;
 }
@@ -105,7 +105,7 @@ img {
   display: block;
 }
 
-/* ─── Navbar ─────────────────────────────────────────────────────────────── */
+/* Navbar */
 .navbar {
   height: 110px;
   background: var(--color-bg-primary);
@@ -190,7 +190,7 @@ img {
   border-right: 1px solid var(--color-border);
 }
 
-/* ─── Theme Toggle Button ────────────────────────────────────────────────── */
+/* Theme Toggle Button */
 .theme-toggle-btn {
   background: transparent;
   border: 1px solid var(--color-border);
@@ -211,7 +211,7 @@ img {
   color: var(--color-text-primary);
 }
 
-/* ─── Sign Out Button ────────────────────────────────────────────────────── */
+/* Sign Out Button */
 .nav-signout-btn {
   background: var(--color-dark-btn);
   color: #EDEBE5;
@@ -235,7 +235,7 @@ img {
   border: 1px solid var(--color-border);
 }
 
-/* ─── Footer ─────────────────────────────────────────────────────────────── */
+/* Footer */
 .site-footer {
   background: var(--color-bg-secondary);
   border-top: 1px solid var(--color-border);
@@ -248,7 +248,7 @@ img {
   color: var(--color-text-muted);
 }
 
-/* ─── Category Badges ────────────────────────────────────────────────────── */
+/* Category Badges */
 .badge {
   display: inline-block;
   font-size: 12px;
@@ -297,7 +297,7 @@ img {
   color: #5dcaa5;
 }
 
-/* ─── Shared Form Inputs ─────────────────────────────────────────────────── */
+/* Shared Form Inputs */
 .form-group {
   margin-bottom: 14px;
 }
@@ -372,7 +372,7 @@ img {
   margin-top: 4px;
 }
 
-/* ─── LOGIN PAGE ─────────────────────────────────────────────────────────── */
+/* Login Page */
 .login-page {
   display: flex;
   min-height: 100vh;
@@ -521,7 +521,7 @@ img {
   background: var(--color-accent-hover);
 }
 
-/* ─── INDEX (Welcome) PAGE ───────────────────────────────────────────────── */
+/* Index (Welcome) Page */
 .hero-section {
   background: #EDEBE5;
   padding: 80px 60px;
@@ -623,7 +623,7 @@ img {
   color: var(--color-text-secondary);
 }
 
-/* ─── PAGE HEADER (marketplace, mylistings, shortlist) ───────────────────── */
+/* Page Header (marketplace, mylistings, shortlist) */
 .page-header {
   padding: 48px 60px 0;
 }
@@ -642,7 +642,7 @@ img {
   margin-top: 6px;
 }
 
-/* ─── MARKETPLACE — Filter Chips ─────────────────────────────────────────── */
+/* Marketplace - Filter Chips */
 .filter-bar {
   display: flex;
   gap: 8px;
@@ -673,7 +673,7 @@ img {
   border-color: var(--color-accent);
 }
 
-/* ─── MARKETPLACE & SHORTLIST — Items Grid ───────────────────────────────── */
+/* Marketplace and Shortlist - Items Grid */
 .items-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -757,7 +757,7 @@ img {
   max-width: 100%;
 }
 
-/* ─── Shortlist Button ───────────────────────────────────────────────────── */
+/* Shortlist Button */
 .shortlist-btn {
   width: 100%;
   border: 2px solid var(--color-accent);
@@ -783,7 +783,7 @@ img {
   cursor: default;
 }
 
-/* ─── Remove Button (shortlist page) ────────────────────────────────────── */
+/* Remove Button (shortlist page) */
 .remove-btn {
   width: 100%;
   border: 1px solid var(--color-border);
@@ -804,7 +804,7 @@ img {
   color: var(--color-accent);
 }
 
-/* ─── MY LISTINGS PAGE ───────────────────────────────────────────────────── */
+/* My Listings Page */
 .add-listing-btn {
   display: inline-flex;
   align-items: center;
@@ -881,7 +881,7 @@ img {
   color: var(--color-text-primary);
 }
 
-/* ─── My Listings Card Grid ───────────────────────────────────────────── */
+/* My Listings Card Grid */
 .my-listings-container {
   padding: 0 60px 60px;
   width: 100%;
@@ -1078,7 +1078,7 @@ img {
   color: var(--color-accent);
 }
 
-/* ─── Empty State ────────────────────────────────────────────────────────── */
+/* Empty State */
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -1132,7 +1132,7 @@ img {
   padding: 60px 28px;
 }
 
-/* ─── RESPONSIVE BREAKPOINTS ─────────────────────────────────────────────── */
+/* Responsive Breakpoints */
 @media (max-width: 1024px) {
   .items-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1261,7 +1261,7 @@ img {
   color: var(--color-accent);
 }
 
-/* ─── Dark mode navbar overrides ────────────────────────────────────────── */
+/* Dark mode navbar overrides */
 [data-theme="dark"] .navbar {
   background: #1e1e1c;
   border-bottom: 2px solid #D6001C;
@@ -1279,7 +1279,7 @@ img {
   color: rgba(255,255,255,0.6);
 }
 
-/* ─── Item Detail Modal ──────────────────────────────────────────────────── */
+/* Item Detail Modal */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -1479,7 +1479,7 @@ img {
   margin-top: auto;
 }
 
-/* ─── My Listings — Edit / Status styles ────────────────────────────────── */
+/* My Listings - Edit / Status styles */
 .edit-input {
   border: 1px solid var(--color-border);
   border-radius: 6px;
@@ -1525,7 +1525,7 @@ img {
   color: var(--color-text-muted);
 }
 
-/* ─── Edit Listing Modal ─────────────────────────────────────────────────── */
+/* Edit Listing Modal */
 .edit-modal-overlay {
   position: fixed;
   inset: 0;
@@ -1656,7 +1656,7 @@ img {
   }
 }
 
-/* ─── Password Toggle ────────────────────────────────────────────────────── */
+/* Password Toggle */
 .password-input-wrap {
   position: relative;
   display: flex;

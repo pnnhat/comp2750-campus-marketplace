@@ -1,14 +1,21 @@
-// theme.js — Theme toggle logic (click-to-open dropdown)
-// Imported by every page as a module
+// theme.js
+// Handles the light, dark, and system theme toggle for all pages.
+// Reads and saves the user's preference in localStorage under "mq-theme".
+// Builds a click-to-open dropdown with three options: Light, Dark, System.
+// Imported as a module by every page.
 
 const THEME_KEY = 'mq-theme';
 
+// Resolve the actual theme to apply based on the saved mode.
+// "system" reads the OS preference via prefers-color-scheme.
 function getEffectiveTheme(mode) {
   if (mode === 'light') return 'light';
   if (mode === 'dark') return 'dark';
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
+// Apply a theme mode by setting data-theme on the html element,
+// saving the preference to localStorage, and updating the toggle icon.
 function applyTheme(mode) {
   const effective = getEffectiveTheme(mode);
   document.documentElement.setAttribute('data-theme', effective);
@@ -28,6 +35,8 @@ function systemIcon() {
   return `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`;
 }
 
+// Update the toggle button icon to reflect the current mode.
+// Sun icon for light, moon for dark, monitor for system.
 function updateToggleIcon(mode) {
   const btn = document.getElementById('theme-toggle');
   if (!btn) return;
@@ -43,6 +52,8 @@ function updateToggleIcon(mode) {
   }
 }
 
+// Run after the DOM is ready.
+// Build the dropdown menu and wire all click listeners.
 document.addEventListener('DOMContentLoaded', () => {
   const saved = localStorage.getItem(THEME_KEY) || 'system';
   updateToggleIcon(saved);
@@ -94,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!isOpen) updateActiveItem();
   });
 
-  // Close dropdown on outside click
+  // Close the dropdown if the user clicks anywhere outside it.
   document.addEventListener('click', (e) => {
     if (!toggleBtn.contains(e.target) && !dropdown.contains(e.target)) {
       dropdown.style.display = 'none';

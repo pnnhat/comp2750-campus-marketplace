@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Apply saved theme before page renders to prevent flash -->
   <script>
-    (function () {
       var saved = localStorage.getItem('mq-theme') || 'system';
       var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       var isDark = saved === 'dark' || (saved === 'system' && prefersDark);
@@ -16,7 +16,7 @@
 </head>
 <body>
 
-  <!-- Navbar -->
+  <!-- Navbar: logo, navigation links, user email, theme toggle, sign out -->
   <nav class="navbar">
     <a href="index.html" class="nav-brand">
       <img src="assets/Macquarie_University.png" alt="Macquarie University" class="nav-mq-img">
@@ -39,18 +39,18 @@
     </div>
   </nav>
 
-  <!-- Page header -->
+  <!-- Page header: title and subtitle -->
   <div class="page-header">
     <h1>My Shortlist</h1>
     <p>Items you have saved from the marketplace</p>
   </div>
 
-  <!-- Items grid -->
+  <!-- Shortlist grid: populated dynamically by shortlist.js from Firestore -->
   <div class="items-grid" id="shortlist-grid">
 
   </div>
 
-  <!-- Empty state (hidden by default) -->
+  <!-- Empty state: shown when the user has no shortlisted items -->
   <div class="empty-state shortlist-empty" id="empty-state" style="display:none;">
     <div class="empty-state-icon">
       <svg width="48" height="48" viewBox="0 0 24 24" fill="none"
@@ -76,9 +76,11 @@
   <script type="module" src="js/theme.js"></script>
   <script type="module" src="js/shortlist.js"></script>
 
+  <!-- Full-screen item detail modal: shown when a shortlisted card is clicked -->
   <div class="modal-overlay" id="item-modal" style="display:none;">
     <div class="modal-fullscreen">
       <button class="modal-close-btn" id="modal-close">✕</button>
+      <!-- Left side: image gallery with prev/next arrows and thumbnail strip -->
       <div class="modal-gallery">
         <div class="modal-gallery-main">
           <img class="modal-main-img" id="modal-main-img" src="" alt="">
@@ -91,6 +93,7 @@
         </div>
         <div class="modal-thumbnails" id="modal-thumbnails"></div>
       </div>
+      <!-- Right side: item details, shows Shortlisted button in disabled state -->
       <div class="modal-details">
         <span class="badge modal-badge" id="modal-badge"></span>
         <h2 class="modal-title" id="modal-title"></h2>

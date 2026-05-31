@@ -1,5 +1,9 @@
-// js/shortlist.js
-// Loads the user's shortlisted items from Firestore and handles removal.
+// shortlist.js
+// Controls the shortlist page (shortlist.html).
+// Loads the signed-in user's shortlisted items from Firestore,
+// fetches live listing data so status and price are always current,
+// renders item cards with a remove button, and handles a full-screen
+// image modal when a card is clicked.
 
 import { requireAuth, handleSignOut } from "./auth-guard.js";
 import { db } from "./firebase-config.js";
@@ -7,6 +11,7 @@ import {
   collection, getDocs, deleteDoc, doc, getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+// Track the images array and current index for the open modal.
 let modalImages = [];
 let modalCurrentIndex = 0;
 
@@ -35,7 +40,10 @@ requireAuth(async (user) => {
   });
 });
 
-// Query and render all items in the user's shortlist
+// Load all items the user has shortlisted.
+// For each shortlist entry, fetch the live listing document from Firestore
+// so the card always shows the current price and status.
+// Falls back to the saved snapshot if the listing no longer exists.
 async function loadShortlist(userUID) {
   const grid = document.getElementById("shortlist-grid");
   grid.innerHTML = "";
@@ -75,7 +83,10 @@ async function loadShortlist(userUID) {
   }
 }
 
-// Build and inject a card for a shortlisted item
+// Build and inject a card for a single shortlisted item.
+// Shows the item image, category, title, description, price,
+// seller email, status (if not Active), and a Remove button.
+// Clicking the card (outside the Remove button) opens the detail modal.
 function renderCard(id, data, userUID) {
   const grid = document.getElementById("shortlist-grid");
   const badgeClass = `badge-${(data.category || "").toLowerCase()}`;
@@ -120,7 +131,9 @@ function renderCard(id, data, userUID) {
   grid.appendChild(card);
 }
 
-// Delete a shortlist entry from Firestore and update the DOM
+// Remove an item from the user's shortlist in Firestore.
+// Deletes the document at shortlists/{userUID}/items/{listingId}.
+// Removes the card from the DOM and shows the empty state if needed.
 async function removeFromShortlist(userUID, listingId) {
   // Delete the shortlist document from Firestore
   await deleteDoc(doc(db, "shortlists", userUID, "items", listingId));
@@ -135,11 +148,15 @@ async function removeFromShortlist(userUID, listingId) {
   }
 }
 
+// Hide the grid and show the empty state message.
 function showEmptyState() {
   document.getElementById("shortlist-grid").style.display = "none";
   document.getElementById("empty-state").style.display = "";
 }
 
+// Open the full-screen detail modal for a shortlisted item.
+// Builds the image gallery from imageURLs array or falls back
+// to single imageURL for backwards compatibility with older listings.
 function openModal(id, data, userUID) {
   if (data.imageURLs && data.imageURLs.length > 0) {
     modalImages = data.imageURLs;
@@ -202,6 +219,8 @@ function openModal(id, data, userUID) {
   document.body.style.overflow = "hidden";
 }
 
+// Display a specific image in the modal gallery by index.
+// Updates the active thumbnail highlight.
 function showModalImage(index) {
   if (modalImages.length === 0) return;
   modalCurrentIndex = (index + modalImages.length) % modalImages.length;
@@ -212,6 +231,8 @@ function showModalImage(index) {
   });
 }
 
+// Build the thumbnail strip below the main image.
+// Only shown when there are 2 or more images.
 function buildThumbnails() {
   const strip = document.getElementById("modal-thumbnails");
   strip.innerHTML = "";
@@ -229,6 +250,7 @@ function buildThumbnails() {
   });
 }
 
+// Close the modal and restore page scrolling.
 function closeModal() {
   document.getElementById("item-modal").style.display = "none";
   document.body.style.overflow = "";

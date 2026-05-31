@@ -1,13 +1,16 @@
-// js/auth-guard.js
-// Imported by every protected page (index, marketplace, mylistings, shortlist).
-// Redirects unauthenticated users to login.html immediately.
-// All page logic must go INSIDE the onAuthStateChanged callback — never outside it.
+// auth-guard.js
+// Shared authentication utility used by all protected pages.
+// Exports two functions:
+//   requireAuth(callback) - checks if a user is signed in,
+//     redirects to login.html if not, or calls callback with the user object
+//   handleSignOut() - signs the user out and redirects to login.html
 
 import { auth } from "./firebase-config.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// Redirect to login if not signed in
-// Calls the provided callback with the user object if signed in
+// Check authentication state on page load.
+// If no user is signed in, redirect immediately to login.
+// If signed in, pass the user object to the page's callback function.
 export function requireAuth(callback) {
   onAuthStateChanged(auth, (user) => {
     if (!user) {
@@ -18,7 +21,9 @@ export function requireAuth(callback) {
   });
 }
 
-// Sign out and redirect to login
+// Sign the current user out of Firebase Auth.
+// On success, redirect to the login page.
+// On error, log the error to the console.
 export function handleSignOut() {
   signOut(auth)
     .then(() => {
