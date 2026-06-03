@@ -1,9 +1,9 @@
 // auth-guard.js
 // Shared authentication utility used by all protected pages.
 // Exports two functions:
-//   requireAuth(callback) - checks if a user is signed in,
-//     redirects to login.html if not, or calls callback with the user object
-//   handleSignOut() - signs the user out and redirects to login.html
+// requireAuth(callback): checks if a user is signed in,
+// redirects to login.html if not, or calls callback with the user object
+// handleSignOut(): signs the user out and redirects to login.html
 
 import { auth } from "./firebase-config.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
