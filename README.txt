@@ -81,7 +81,7 @@ NOTES
   project, js/firebase-config.js is listed in .gitignore
   to prevent credentials from being pushed to GitHub.
   When running from this zip file, .gitignore has no
-  effect — all files including firebase-config.js are
+  effect. All files including firebase-config.js are
   present and the app will run normally.
 
 - The app requires an internet connection to connect
