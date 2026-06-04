@@ -7,7 +7,7 @@ HOW TO RUN THE APPLICATION
 ----------------------------------------------------------------
 1. Unzip the project folder
 2. Open the folder in VS Code
-3. Right-click login.html and select "Open with Live Server"
+3. Right click login.html and select "Open with Live Server"
 4. The app will open in your browser at localhost:5500
 
 ================================================================
@@ -56,22 +56,26 @@ Password: Campus123!
 PROJECT STRUCTURE
 ----------------------------------------------------------------
 comp2750-campus-marketplace/
-├── login.html          Sign in page
-├── index.html          Home page (after sign in)
-├── marketplace.html    Browse all listings
-├── mylistings.html     View and manage own listings
-├── shortlist.html      View shortlisted items
+├── login.html              Sign in page
+├── index.html              Home page (after sign in)
+├── marketplace.html        Browse all listings
+├── mylistings.html         View and manage own listings
+├── shortlist.html          View shortlisted items
 ├── css/
-│   └── style.css       All styles
+│   └── style.css           All styles
 ├── js/
-│   ├── firebase-config.js    Firebase setup
-│   ├── auth-guard.js         Authentication utility
-│   ├── theme.js              Light/dark/system theme toggle
-│   ├── index.js              Home page logic
-│   ├── marketplace.js        Marketplace logic
-│   ├── mylistings.js         My Listings logic
-│   └── shortlist.js          Shortlist logic
-└── assets/             MQ logo and other assets
+│   ├── firebase-config.js  Firebase setup
+│   ├── auth-guard.js       Authentication utility
+│   ├── theme.js            Light/dark/system theme toggle
+│   ├── index.js            Home page logic
+│   ├── marketplace.js      Marketplace logic
+│   ├── mylistings.js       My Listings logic
+│   └── shortlist.js        Shortlist logic
+├── assets/                 MQ logo and other assets
+├── .gitignore              Specifies files excluded from
+│                           version control, including
+│                           js/firebase-config.js
+└── CampusMarketplace.pptx  Group presentation slides
 
 ================================================================
 NOTES
@@ -79,9 +83,20 @@ NOTES
 - js/firebase-config.js is included in this zip file.
   The Firebase configuration is also listed above
   for reference.
+
+- .gitignore is a version control file that tells Git
+  which files to exclude from the repository. In this
+  project, js/firebase-config.js is listed in .gitignore
+  to prevent credentials from being pushed to GitHub.
+  When running from this zip file, .gitignore has no
+  effect — all files including firebase-config.js are
+  present and the app will run normally.
+
 - The app requires an internet connection to connect
   to Firebase Authentication, Firestore, and Storage.
+
 - All listing data is stored in Firebase Firestore.
+
 - Item images uploaded via the app are stored in
   Firebase Storage.
 ================================================================
