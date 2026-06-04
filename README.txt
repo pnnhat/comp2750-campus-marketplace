@@ -1,14 +1,6 @@
 ================================================================
 COMP2750 - Applications Modelling and Development
 Assessment Task 3 - Campus Marketplace
-================================================================
-
-HOW TO RUN THE APPLICATION
-----------------------------------------------------------------
-1. Unzip the project folder
-2. Open the folder in VS Code
-3. Right click login.html and select "Open with Live Server"
-4. The app will open in your browser at localhost:5500
 
 ================================================================
 FIREBASE CONFIGURATION
